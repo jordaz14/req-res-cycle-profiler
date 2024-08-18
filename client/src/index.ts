@@ -1,4 +1,4 @@
-const url = "http://localhost:3000";
+const url: string = "http://localhost:3000";
 
 interface Home {
   message: string;
