@@ -8,7 +8,37 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const url = "http://localhost:3000";
+const serverUrl = "http://localhost:3000/";
+// MEASURES DNS RESOLUTION TIME
+function measureNetworkTiming(url) {
+    return __awaiter(this, void 0, void 0, function* () {
+        performance.clearResourceTimings();
+        yield fetchData(url);
+        const entries = performance.getEntriesByType("resource");
+        const entry = entries.find((entry) => entry.name === url);
+        if (entry) {
+            const dnsTime = entry.domainLookupEnd - entry.domainLookupStart;
+            const tcpTime = entry.connectEnd - entry.connectStart;
+            const tlsTime = entry.secureConnectionStart
+                ? entry.connectEnd - entry.secureConnectionStart
+                : 0;
+            return { dnsTime, tcpTime, tlsTime };
+        }
+        else {
+            return null;
+        }
+    });
+}
+measureNetworkTiming(serverUrl).then((result) => {
+    console.log(result);
+});
+/*
+interface Home {
+  message: string;
+}
+
+fetchData<Home>(serverUrl).then((result) => console.log(result));
+*/
 function fetchData(url) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -24,4 +54,3 @@ function fetchData(url) {
         }
     });
 }
-fetchData(url).then((result) => console.log(result));
