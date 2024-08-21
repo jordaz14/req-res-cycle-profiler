@@ -11,9 +11,9 @@ app.get("/", (req: Request, res: Response) => {
   const requestTime: number = Date.now();
   const formattedRequestTime: string = new Date(requestTime).toISOString();
 
-  const LOOPCOUNT: number = 1e9;
+  const LOOP_COUNT: number = 1e9;
 
-  for (let i = 0; i < LOOPCOUNT; i++) {
+  for (let i = 0; i < LOOP_COUNT; i++) {
     let j = 0;
   }
 
@@ -23,5 +23,5 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server is listening at http://localhost:${port}`);
+  console.log(`Server is listening on ${port}`);
 });
