@@ -3,6 +3,7 @@ const serverUrl: string = "https://req-res-lifecycle-viz.onrender.com";
 
 // MEASURES DNS RESOLUTION TIME
 async function measureNetworkTiming(url: string): Promise<{} | null> {
+  console.log("Network timing...");
   performance.clearResourceTimings();
 
   await fetchData(url);
@@ -21,6 +22,7 @@ async function measureNetworkTiming(url: string): Promise<{} | null> {
       : 0;
     return { dnsTime, tcpTime, tlsTime };
   } else {
+    console.log("No entry found.");
     return null;
   }
 }
