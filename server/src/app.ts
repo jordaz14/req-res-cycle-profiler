@@ -22,6 +22,6 @@ app.get("/", (req: Request, res: Response) => {
   res.send({ reqTime: formattedRequestTime, resTime: formattedResponseTime });
 });
 
-app.listen(port, () => {
+app.listen(Number(port), "0.0.0.0", () => {
   console.log(`Server is listening on ${port}`);
 });
