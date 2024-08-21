@@ -8,7 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const serverUrl = "http://localhost:3000/";
+// const serverUrl: string = "http://localhost:3000/";
+const serverUrl = "https://req-res-lifecycle-viz.onrender.com";
 // MEASURES DNS RESOLUTION TIME
 function measureNetworkTiming(url) {
     return __awaiter(this, void 0, void 0, function* () {
