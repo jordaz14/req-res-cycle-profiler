@@ -11,7 +11,7 @@ app.get("/", (req: Request, res: Response) => {
   const requestTime: number = Date.now();
   const formattedRequestTime: string = new Date(requestTime).toISOString();
 
-  const LOOP_COUNT: number = 1e9;
+  const LOOP_COUNT: number = 1e6;
 
   for (let i = 0; i < LOOP_COUNT; i++) {
     let j = 0;

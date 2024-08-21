@@ -12,7 +12,7 @@ app.use(express_1.default.json());
 app.get("/", (req, res) => {
     const requestTime = Date.now();
     const formattedRequestTime = new Date(requestTime).toISOString();
-    const LOOP_COUNT = 1e9;
+    const LOOP_COUNT = 1e6;
     for (let i = 0; i < LOOP_COUNT; i++) {
         let j = 0;
     }
