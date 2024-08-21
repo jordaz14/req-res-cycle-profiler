@@ -4,7 +4,87 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="./dist/index.js" async></script>
+    <link rel="stylesheet" href="style.css" />
     <title>Response Times</title>
   </head>
-  <body></body>
+  <body>
+    <main>
+      <div id="status"></div>
+      <button id="send-button">Send Request</button>
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Time (ms)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>DNS Resolution Time</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>TCP Connection Time</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>TLS Handshake Time</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Request Sending Time</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Request Parsing Time</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Routing Time</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Middleware Parsing Time</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Business Logic Execution Time</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Database Query Time</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>External API Call Time</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Response Construction Time</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Response Receiving Time</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Response Parsing Time</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Scripting Time</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Rendering Time</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Painting Time</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+  </body>
 </html>
