@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 // const serverUrl: string = "http://localhost:3000/";
-const serverUrl = "https://req-res-lifecycle-viz.onrender.com";
+const serverUrl = "https://req-res-lifecycle-viz.onrender.com/";
 // MEASURES DNS RESOLUTION TIME
 function measureNetworkTiming(url) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -17,6 +17,7 @@ function measureNetworkTiming(url) {
         performance.clearResourceTimings();
         yield fetchData(url);
         const entries = performance.getEntriesByType("resource");
+        console.log(entries);
         const entry = entries.find((entry) => entry.name === url);
         if (entry) {
             const dnsTime = entry.domainLookupEnd - entry.domainLookupStart;

@@ -1,5 +1,5 @@
 // const serverUrl: string = "http://localhost:3000/";
-const serverUrl: string = "https://req-res-lifecycle-viz.onrender.com";
+const serverUrl: string = "https://req-res-lifecycle-viz.onrender.com/";
 
 // MEASURES DNS RESOLUTION TIME
 async function measureNetworkTiming(url: string): Promise<{} | null> {
@@ -11,6 +11,8 @@ async function measureNetworkTiming(url: string): Promise<{} | null> {
   const entries: PerformanceResourceTiming[] = performance.getEntriesByType(
     "resource"
   ) as PerformanceResourceTiming[];
+
+  console.log(entries);
 
   const entry = entries.find((entry) => entry.name === url);
 
