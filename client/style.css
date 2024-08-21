@@ -24,6 +24,10 @@ main {
   gap: 10px;
 }
 
+th {
+  text-align: left;
+}
+
 #status {
   background-color: rgb(235, 245, 232);
   border-radius: 25px;
@@ -34,4 +38,20 @@ main {
 
 #send-button {
   padding: 10px;
+}
+
+.client-server {
+  background-color: rgb(253, 242, 206);
+}
+
+.server {
+  background-color: rgb(214, 224, 243);
+}
+
+.server-client {
+  background-color: rgb(225, 248, 225);
+}
+
+.client {
+  background-color: rgb(240, 212, 212);
 }
