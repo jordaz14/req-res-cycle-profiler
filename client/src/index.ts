@@ -1,4 +1,5 @@
-const serverUrl: string = "http://localhost:3000/";
+// const serverUrl: string = "http://localhost:3000/";
+const serverUrl: string = "https://req-res-lifecycle-viz.onrender.com";
 
 // MEASURES DNS RESOLUTION TIME
 async function measureNetworkTiming(url: string): Promise<{} | null> {
