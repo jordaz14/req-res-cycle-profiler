@@ -10,6 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 // const serverUrl: string = "http://localhost:3000/";
 const serverUrl = "https://req-res-lifecycle-viz.onrender.com/";
+const sendReqButton = document.querySelector("#send-button");
+sendReqButton === null || sendReqButton === void 0 ? void 0 : sendReqButton.addEventListener("click", () => measureNetworkTiming(serverUrl).then((result) => {
+    console.log(result);
+}));
 // MEASURES DNS RESOLUTION TIME
 function measureNetworkTiming(url) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -33,9 +37,6 @@ function measureNetworkTiming(url) {
         }
     });
 }
-measureNetworkTiming(serverUrl).then((result) => {
-    console.log(result);
-});
 /*
 interface Home {
   message: string;

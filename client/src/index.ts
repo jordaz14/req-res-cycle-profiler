@@ -1,6 +1,13 @@
 // const serverUrl: string = "http://localhost:3000/";
 const serverUrl: string = "https://req-res-lifecycle-viz.onrender.com/";
 
+const sendReqButton = document.querySelector("#send-button");
+sendReqButton?.addEventListener("click", () =>
+  measureNetworkTiming(serverUrl).then((result) => {
+    console.log(result);
+  })
+);
+
 // MEASURES DNS RESOLUTION TIME
 async function measureNetworkTiming(url: string): Promise<{} | null> {
   console.log("Network timing...");
@@ -28,10 +35,6 @@ async function measureNetworkTiming(url: string): Promise<{} | null> {
     return null;
   }
 }
-
-measureNetworkTiming(serverUrl).then((result) => {
-  console.log(result);
-});
 
 /*
 interface Home {
