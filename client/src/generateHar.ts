@@ -1,3 +1,4 @@
+/*
 import puppeteer from "puppeteer";
 import puppeteerHar from "puppeteer-har"; // Import the puppeteer-har module
 
@@ -22,3 +23,4 @@ export async function generateHar() {
 }
 
 generateHar().catch(console.error);
+*/
