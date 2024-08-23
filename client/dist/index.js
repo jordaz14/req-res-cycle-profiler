@@ -15,7 +15,9 @@ sendReqButton === null || sendReqButton === void 0 ? void 0 : sendReqButton.addE
     fetchData(`${serverUrl}/measure`).then((response) => {
         console.log(response);
     });
-    fetchData(`${serverUrl}/`).then((response) => {
+    postData(`${serverUrl}/mail`, {
+        smallJsonData,
+    }).then((response) => {
         console.log(response);
     });
 });
@@ -34,3 +36,28 @@ function fetchData(url) {
         }
     });
 }
+function postData(url, data) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const reqStart = performance.now();
+        const combinedData = Object.assign(Object.assign({}, data), { reqStart: reqStart });
+        try {
+            const request = new Request(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(combinedData),
+            });
+            const reqStructEnd = performance.now();
+            const response = yield fetch(request);
+            const responseData = yield response.json();
+            return { reqStructTime: reqStructEnd - reqStart, responseData };
+        }
+        catch (error) {
+            console.error(error);
+        }
+    });
+}
+const smallJsonData = {
+    name: "John Doe",
+    email: "john.doe@example.com",
+    message: "Hello, world!",
+};

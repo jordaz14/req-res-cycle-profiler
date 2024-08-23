@@ -6,7 +6,9 @@ sendReqButton?.addEventListener("click", () => {
   fetchData(`${serverUrl}/measure`).then((response) => {
     console.log(response);
   });
-  fetchData(`${serverUrl}/`).then((response) => {
+  postData(`${serverUrl}/mail`, {
+    smallJsonData,
+  }).then((response) => {
     console.log(response);
   });
 });
@@ -25,3 +27,36 @@ async function fetchData<T>(url: string): Promise<T | null> {
     return null;
   }
 }
+
+async function postData(url: string, data: {}): Promise<any> {
+  const reqStart = performance.now();
+
+  const combinedData = {
+    ...data,
+    reqStart: reqStart,
+  };
+
+  try {
+    const request = new Request(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(combinedData),
+    });
+
+    const reqStructEnd = performance.now();
+
+    const response = await fetch(request);
+
+    const responseData = await response.json();
+
+    return { reqStructTime: reqStructEnd - reqStart, responseData };
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+const smallJsonData = {
+  name: "John Doe",
+  email: "john.doe@example.com",
+  message: "Hello, world!",
+};
