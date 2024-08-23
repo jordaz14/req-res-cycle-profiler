@@ -1,16 +1,45 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import { performance } from "perf_hooks";
 import * as dns from "dns";
 import * as net from "net";
 import * as tls from "tls";
-import { rejects } from "assert";
+import { json } from "stream/consumers";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
-app.use(express.json());
+
+// MEASURES DNS, TCP, & TLS CONNECTION TIMES
+app.get("/measure", express.json(), async (req: Request, res: Response) => {
+  const hostname = "req-res-server.netlify.app";
+  try {
+    const dnsTime = await measureDnsTime(hostname);
+    const tcpTime = await measureTcpTime(hostname, 80);
+    const tlsTime = await measureTlsTime(hostname, 443);
+
+    res.json({ dnsTime, tcpTime, tlsTime });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.post(
+  "/mail",
+  measureJsonParsingTime,
+  measureRoutingTime,
+  (req: Request, res: Response) => {
+    let { reqStart } = req.body;
+    let { parsingTime } = req;
+    console.log(reqStart, parsingTime);
+    res.send({ parsingTime: parsingTime, message: "You got mail" });
+  }
+);
+
+app.get("/", (req: Request, res: Response) => {
+  res.send({ message: "Welcome to the Landing Page." });
+});
 
 function measureDnsTime(hostname: string): Promise<number> {
   return new Promise((resolve, reject) => {

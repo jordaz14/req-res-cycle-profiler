@@ -27,20 +27,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const generateHar_1 = require("./generateHar");
 const cors_1 = __importDefault(require("cors"));
+const perf_hooks_1 = require("perf_hooks");
+const dns = __importStar(require("dns"));
+const net = __importStar(require("net"));
+const tls = __importStar(require("tls"));
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
 app.use((0, cors_1.default)());
-app.use(express_1.default.json());
-app.get("/generate-har", async (req, res) => {
+// MEASURES DNS, TCP, & TLS CONNECTION TIMES
+app.get("/measure", express_1.default.json(), async (req, res) => {
+    const hostname = "req-res-server.netlify.app";
     try {
-        const harData = await (0, generateHar_1.generateHar)();
-        console.log(harData);
-        res.status(200).send({ message: "hi there" });
+        const dnsTime = await measureDnsTime(hostname);
+        const tcpTime = await measureTcpTime(hostname, 80);
+        const tlsTime = await measureTlsTime(hostname, 443);
+        res.json({ dnsTime, tcpTime, tlsTime });
     }
-    catch (error) {
-        console.error("An error occurred.");
+    catch (err) {
+        console.error(err);
     }
 });
 app.post("/mail", measureJsonParsingTime, measureRoutingTime, (req, res) => {
