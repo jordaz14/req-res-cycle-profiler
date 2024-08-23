@@ -10,9 +10,11 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/generate-har", async (req: Request, res: Response) => {
+  req.setTimeout(6000000);
   try {
     const harData = await generateHar();
     console.log(harData);
+    res.setHeader("Content-Type", "application/json");
     res.status(200).send({ message: "hi there" });
   } catch (error) {
     console.error("An error occurred.");

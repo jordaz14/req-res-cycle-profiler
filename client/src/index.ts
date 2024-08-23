@@ -6,8 +6,10 @@ sendReqButton?.addEventListener("click", () => {
   fetchData(`${serverUrl}/generate-har`).then((response) => {
     console.log(response);
   });
+  fetchData(`${serverUrl}/`).then((response) => {
+    console.log(response);
+  });
 });
-
 
 /*
 // MEASURES DNS RESOLUTION TIME
