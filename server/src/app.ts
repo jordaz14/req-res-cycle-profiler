@@ -19,6 +19,10 @@ app.get("/generate-har", async (req: Request, res: Response) => {
   }
 });
 
+app.get("/", (req: Request, res: Response) => {
+  res.send({ message: "hello world" });
+});
+
 /*
 
 app.get("/", async (req: Request, res: Response) => {
