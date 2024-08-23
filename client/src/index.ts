@@ -1,13 +1,15 @@
-// const serverUrl: string = "http://localhost:3000/";
-const serverUrl: string = "https://req-res-lifecycle-viz.onrender.com/";
+const serverUrl: string = "http://localhost:3000";
+//const serverUrl: string = "https://req-res-lifecycle-viz.onrender.com/";
 
 const sendReqButton = document.querySelector("#send-button");
-sendReqButton?.addEventListener("click", () =>
-  measureNetworkTiming(serverUrl).then((result) => {
-    console.log(result);
-  })
-);
+sendReqButton?.addEventListener("click", () => {
+  fetchData(`${serverUrl}/generate-har`).then((response) => {
+    console.log(response);
+  });
+});
 
+
+/*
 // MEASURES DNS RESOLUTION TIME
 async function measureNetworkTiming(url: string): Promise<{} | null> {
   console.log("Network timing...");
@@ -36,7 +38,7 @@ async function measureNetworkTiming(url: string): Promise<{} | null> {
   }
 }
 
-/*
+
 interface Home {
   message: string;
 }
