@@ -3,7 +3,7 @@ const serverUrl: string = "http://localhost:3000";
 
 const sendReqButton = document.querySelector("#send-button");
 sendReqButton?.addEventListener("click", () => {
-  fetchData(`${serverUrl}/generate-har`).then((response) => {
+  fetchData(`${serverUrl}/measure`).then((response) => {
     console.log(response);
   });
   fetchData(`${serverUrl}/`).then((response) => {

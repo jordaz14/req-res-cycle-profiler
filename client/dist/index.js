@@ -12,7 +12,7 @@ const serverUrl = "http://localhost:3000";
 //const serverUrl: string = "https://req-res-lifecycle-viz.onrender.com/";
 const sendReqButton = document.querySelector("#send-button");
 sendReqButton === null || sendReqButton === void 0 ? void 0 : sendReqButton.addEventListener("click", () => {
-    fetchData(`${serverUrl}/generate-har`).then((response) => {
+    fetchData(`${serverUrl}/measure`).then((response) => {
         console.log(response);
     });
     fetchData(`${serverUrl}/`).then((response) => {
