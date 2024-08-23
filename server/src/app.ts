@@ -45,34 +45,31 @@ function measureTlsTime(hostname: string, port: number): Promise<number> {
   });
 }
 
-app.get("/measure", async (req: Request, res: Response) => {
-  const hostname = "req-res-lifecycle-viz.onrender.com";
-  try {
-    const dnsTime = await measureDnsTime(hostname);
-    const tcpTime = await measureTcpTime(hostname, 80);
-    const tlsTime = await measureTlsTime(hostname, 443);
+function measureJsonParsingTime(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const parsingStart = performance.now();
 
-    res.json({ dnsTime, tcpTime, tlsTime });
-  } catch (err) {
-    console.error(err);
-  }
-});
+  express.json()(req, res, () => {
+    const parsingEnd = performance.now();
+    console.log(`Request parsing time: ${parsingEnd - parsingStart}`);
+    req.parsingTime = parsingEnd - parsingStart;
+    next();
+  });
+}
 
-/*
-app.get("/generate-har", async (req: Request, res: Response) => {
-  try {
-    const harData = await generateHar();
-    console.log(harData);
-    res.status(200).send({ message: "hi there" });
-  } catch (error) {
-    console.error("An error occurred.");
-  }
-});
-*/
+function measureRoutingTime(req: Request, res: Response, next: NextFunction) {
+  const routingStart = performance.now();
 
-app.get("/", (req: Request, res: Response) => {
-  res.send({ message: "hello world" });
-});
+  res.once("finish", () => {
+    const routingEnd = performance.now();
+    console.log(`Request routing time: ${routingEnd - routingStart}`);
+  });
+
+  next();
+}
 
 app.listen(Number(port), "0.0.0.0", () => {
   console.log(`Server is listening on ${port}`);
