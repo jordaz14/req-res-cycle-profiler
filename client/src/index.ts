@@ -11,43 +11,6 @@ sendReqButton?.addEventListener("click", () => {
   });
 });
 
-/*
-// MEASURES DNS RESOLUTION TIME
-async function measureNetworkTiming(url: string): Promise<{} | null> {
-  console.log("Network timing...");
-  performance.clearResourceTimings();
-
-  await fetchData(url);
-
-  const entries: PerformanceResourceTiming[] = performance.getEntriesByType(
-    "resource"
-  ) as PerformanceResourceTiming[];
-
-  console.log(entries);
-
-  const entry = entries.find((entry) => entry.name === url);
-
-  if (entry) {
-    const dnsTime: number = entry.domainLookupEnd - entry.domainLookupStart;
-    const tcpTime: number = entry.connectEnd - entry.connectStart;
-    const tlsTime: number = entry.secureConnectionStart
-      ? entry.connectEnd - entry.secureConnectionStart
-      : 0;
-    return { dnsTime, tcpTime, tlsTime };
-  } else {
-    console.log("No entry found.");
-    return null;
-  }
-}
-
-
-interface Home {
-  message: string;
-}
-
-fetchData<Home>(serverUrl).then((result) => console.log(result));
-*/
-
 async function fetchData<T>(url: string): Promise<T | null> {
   try {
     const response = await fetch(url);
