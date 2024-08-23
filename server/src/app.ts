@@ -1,8 +1,6 @@
 import express, { Request, Response } from "express";
 import { generateHar } from "./generateHar";
 import cors from "cors";
-import { error } from "console";
-
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -10,11 +8,9 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/generate-har", async (req: Request, res: Response) => {
-  req.setTimeout(6000000);
   try {
     const harData = await generateHar();
     console.log(harData);
-    res.setHeader("Content-Type", "application/json");
     res.status(200).send({ message: "hi there" });
   } catch (error) {
     console.error("An error occurred.");

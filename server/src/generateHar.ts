@@ -20,9 +20,7 @@ export async function generateHar() {
 
     await har.start({ path: harFilePath });
 
-    await page.goto("https://main--starlit-parfait-705b1f.netlify.app/", {
-      timeout: 30000,
-    });
+    await page.goto("https://main--starlit-parfait-705b1f.netlify.app/");
 
     await page.evaluate(async () => {
       const response = await fetch(
