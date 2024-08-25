@@ -11,6 +11,22 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 
+function measureJsonParsingTime(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const parsingStart = performance.now();
+
+  express.json()(req, res, () => {
+    const parsingEnd = performance.now();
+    req.parsingTime = parsingEnd - parsingStart;
+    next();
+  });
+}
+
+app.use(measureJsonParsingTime);
+
 // MEASURES DNS, TCP, & TLS CONNECTION TIMES
 app.get("/measure", express.json(), async (req: Request, res: Response) => {
   const hostname = "req-res-server.netlify.app";

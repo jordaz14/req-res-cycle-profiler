@@ -35,6 +35,15 @@ const tls = __importStar(require("tls"));
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
 app.use((0, cors_1.default)());
+function measureJsonParsingTime(req, res, next) {
+    const parsingStart = perf_hooks_1.performance.now();
+    express_1.default.json()(req, res, () => {
+        const parsingEnd = perf_hooks_1.performance.now();
+        req.parsingTime = parsingEnd - parsingStart;
+        next();
+    });
+}
+app.use(measureJsonParsingTime);
 // MEASURES DNS, TCP, & TLS CONNECTION TIMES
 app.get("/measure", express_1.default.json(), async (req, res) => {
     const hostname = "req-res-server.netlify.app";
