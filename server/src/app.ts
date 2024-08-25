@@ -90,32 +90,6 @@ function measureTlsTime(hostname: string, port: number): Promise<number> {
   });
 }
 
-function measureJsonParsingTime(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  const parsingStart = performance.now();
-
-  express.json()(req, res, () => {
-    const parsingEnd = performance.now();
-    console.log(`Request parsing time: ${parsingEnd - parsingStart}`);
-    req.parsingTime = parsingEnd - parsingStart;
-    next();
-  });
-}
-
-function measureRoutingTime(req: Request, res: Response, next: NextFunction) {
-  const routingStart = performance.now();
-
-  res.once("finish", () => {
-    const routingEnd = performance.now();
-    console.log(`Request routing time: ${routingEnd - routingStart}`);
-  });
-
-  next();
-}
-
 app.listen(Number(port), "0.0.0.0", () => {
   console.log(`Server is listening on ${port}`);
 });
