@@ -57,11 +57,17 @@ app.get("/measure", express_1.default.json(), async (req, res) => {
         console.error(err);
     }
 });
-app.post("/mail", measureJsonParsingTime, measureRoutingTime, (req, res) => {
+app.post("/mail", (req, res) => {
+    const resStart = perf_hooks_1.performance.now();
     let { reqStart } = req.body;
     let { parsingTime } = req;
-    console.log(reqStart, parsingTime);
-    res.send({ parsingTime: parsingTime, message: "You got mail" });
+    console.log(reqStart, resStart);
+    const middlewareExecTime = resStart - reqStart - parsingTime;
+    console.log(middlewareExecTime);
+    res.send({
+        parsingTime: parsingTime,
+        message: "You got mail!",
+    });
 });
 app.get("/", (req, res) => {
     res.send({ message: "Welcome to the Landing Page." });
