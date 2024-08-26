@@ -40,6 +40,15 @@ th {
 
 #send-button {
   padding: 10px;
+  color: white;
+  border: none;
+  background-color: rgb(146, 45, 240);
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+#send-button:hover {
+  background-color: rgb(164, 86, 236);
 }
 
 .client-server {
