@@ -61,11 +61,21 @@ app.post("/mail", (req, res) => {
     const resStart = Date.now();
     let { reqStart } = req.body;
     let { parsingTime } = req;
-    console.log(reqStart, resStart);
-    const middlewareExecTime = resStart - reqStart - parsingTime;
-    console.log(middlewareExecTime);
+    // This can also be considered all other middleware executions
+    const routingTime = resStart - reqStart - parsingTime;
+    // BUSINESS LOGIC
+    const logicStart = perf_hooks_1.performance.now();
+    const LOOPS = 10e8;
+    for (let i = 0; i < LOOPS; i++) {
+        let counter = i;
+        counter++;
+    }
+    const logicEnd = perf_hooks_1.performance.now();
+    const logicTime = logicEnd - logicStart;
     res.send({
-        parsingTime: parsingTime,
+        reqParsingTime: parsingTime,
+        routingTime: routingTime,
+        logicTime: logicTime,
         message: "You got mail!",
     });
 });
