@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 const serverUrl = "http://localhost:3000";
 //const serverUrl: string = "https://req-res-lifecycle-viz.onrender.com/";
+const notifyIcon = document.querySelector("#status");
 const sendReqButton = document.querySelector("#send-button");
 sendReqButton === null || sendReqButton === void 0 ? void 0 : sendReqButton.addEventListener("click", () => {
     fetchData(`${serverUrl}/measure`).then((response) => {
@@ -19,6 +20,7 @@ sendReqButton === null || sendReqButton === void 0 ? void 0 : sendReqButton.addE
         smallJsonData,
     }).then((response) => {
         console.log(response);
+        notifyIcon === null || notifyIcon === void 0 ? void 0 : notifyIcon.textContent = response.responseData.message;
     });
 });
 function fetchData(url) {

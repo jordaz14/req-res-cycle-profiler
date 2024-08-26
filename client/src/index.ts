@@ -1,6 +1,8 @@
 const serverUrl: string = "http://localhost:3000";
 //const serverUrl: string = "https://req-res-lifecycle-viz.onrender.com/";
 
+const notifyIcon: Element | null = document.querySelector("#status");
+
 const sendReqButton = document.querySelector("#send-button");
 sendReqButton?.addEventListener("click", () => {
   fetchData(`${serverUrl}/measure`).then((response) => {
@@ -10,6 +12,7 @@ sendReqButton?.addEventListener("click", () => {
     smallJsonData,
   }).then((response) => {
     console.log(response);
+    notifyIcon?.textContent = response.responseData.message;
   });
 });
 
