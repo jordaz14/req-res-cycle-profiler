@@ -30,12 +30,55 @@ th {
   text-align: left;
 }
 
-#status {
-  background-color: rgb(235, 245, 232);
-  border-radius: 25px;
-  height: 250px;
-  width: 250px;
+p {
+  font-weight: lighter;
+  font-size: 1.1rem;
+  font-family: "Open Sans";
+}
+
+#input-card {
+  display: flex;
+  flex-direction: column;
+  background-color: whitesmoke;
+  height: 100%;
+  flex: 1;
+  padding: 20px 40px;
+  gap: 20px;
+}
+
+#input-card-body {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  flex: 1;
+  background-color: white;
+}
+
+#input-card-body-content {
+  padding: 10px;
+}
+
+#output-card {
+  background-color: rgb(158, 156, 156);
+  height: 100%;
+  flex: 1;
+  padding: 20px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.25) 1px,
+    transparent 1px,
+    transparent 6px
+  );
+  background-size: 4px 4px;
+}
+
+#status {
+  display: block;
 }
 
 #send-button {
