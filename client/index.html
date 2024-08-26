@@ -9,82 +9,123 @@
   </head>
   <body>
     <main>
-      <div id="status"></div>
-      <button id="send-button">Send Request</button>
-      <table>
-        <thead>
-          <tr>
-            <th>Metric</th>
-            <th>Time (ms)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr id="dns-time" class="client-server">
-            <td>DNS Resolution Time</td>
-            <td></td>
-          </tr>
-          <tr id="tcp-time" class="client-server">
-            <td>TCP Connection Time</td>
-            <td></td>
-          </tr>
-          <tr id="tls-time" class="client-server">
-            <td>TLS Handshake Time</td>
-            <td></td>
-          </tr>
-          <tr id="req-struct-time" class="client-server">
-            <td>Request Construction Time</td>
-            <td></td>
-          </tr>
-          <tr id="req-send-time" class="client-server">
-            <td>Request Sending Time</td>
-            <td></td>
-          </tr>
-          <tr id="req-parse-time" class="server">
-            <td>Request Parsing Time</td>
-            <td></td>
-          </tr>
-          <tr id="route-time" class="server">
-            <td>Routing Time</td>
-            <td></td>
-          </tr>
-          <tr id="business-logic-time" class="server">
-            <td>Business Logic Execution Time</td>
-            <td></td>
-          </tr>
-          <tr id="db-time" class="server">
-            <td>Database Query Time</td>
-            <td></td>
-          </tr>
-          <tr id="api-time" class="server">
-            <td>External API Call Time</td>
-            <td></td>
-          </tr>
-          <tr id="res-struct-time" class="server">
-            <td>Response Construction Time</td>
-            <td></td>
-          </tr>
-          <tr id="res-send-time" class="server-client">
-            <td>Response Sending Time</td>
-            <td></td>
-          </tr>
-          <tr id="res-parse-time" class="client">
-            <td>Response Parsing Time</td>
-            <td></td>
-          </tr>
-          <tr id="script-time" class="client">
-            <td>Scripting Time</td>
-            <td></td>
-          </tr>
-          <tr id="render-time" class="client">
-            <td>Rendering Time</td>
-            <td></td>
-          </tr>
-          <tr id="paint-time" class="client">
-            <td>Painting Time</td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
+      <div id="input-card">
+        <div id="input-card-header">
+          <h1>Request-Response Lifecycle</h1>
+          <p>
+            The request-response lifecycle is the sequence of steps which occur
+            when your browser makes a request to a server; the server processes
+            that request and queries a database; the server sends back a
+            response; and, the client processes and renders the response.
+          </p>
+        </div>
+        <div id="input-card-body">
+          <nav>
+            <button class="nav-link">Client-Server</button>
+            <button class="nav-link">Server</button>
+            <button class="nav-link">Server-Client</button>
+            <button class="nav-link">Client</button>
+          </nav>
+          <div id="input-card-body-content">
+            <h2>Client-Server</h2>
+            <p>This is a paragraph describing what this section does.</p>
+            <h3>DNS Resolution Time</h3>
+            <p>This is a paragraph describing what this section does.</p>
+            <h3>TCP Handshake Time</h3>
+            <p>This is a paragraph describing what this section does.</p>
+            <h3>TLS Handshake Time</h3>
+            <p>This is a paragraph describing what this section does.</p>
+            <h3>Request Construction Time</h3>
+            <p>This is a paragraph describing what this section does.</p>
+            <h3>Request Sending Time</h3>
+            <p>
+              Time it actually takes to send HTTP request data over established
+              TCP/TLS connection. - Client constructs headers & prepares body ->
+              request packaged, sent in packets, and flowed through TCP ->
+              server receives packets, reassembles, and sends ACKs -> final
+              packet is sent & TCP remains open for server response
+            </p>
+          </div>
+        </div>
+      </div>
+      <div id="output-card">
+        <div id="status"></div>
+        <button id="send-button">Send Request</button>
+        <table>
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Time (ms)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="dns-time" class="client-server">
+              <td>DNS Resolution Time</td>
+              <td></td>
+            </tr>
+            <tr id="tcp-time" class="client-server">
+              <td>TCP Connection Time</td>
+              <td></td>
+            </tr>
+            <tr id="tls-time" class="client-server">
+              <td>TLS Handshake Time</td>
+              <td></td>
+            </tr>
+            <tr id="req-struct-time" class="client-server">
+              <td>Request Construction Time</td>
+              <td></td>
+            </tr>
+            <tr id="req-send-time" class="client-server">
+              <td>Request Sending Time</td>
+              <td></td>
+            </tr>
+            <tr id="req-parse-time" class="server">
+              <td>Request Parsing Time</td>
+              <td></td>
+            </tr>
+            <tr id="route-time" class="server">
+              <td>Routing Time</td>
+              <td></td>
+            </tr>
+            <tr id="business-logic-time" class="server">
+              <td>Business Logic Execution Time</td>
+              <td></td>
+            </tr>
+            <tr id="db-time" class="server">
+              <td>Database Query Time</td>
+              <td></td>
+            </tr>
+            <tr id="api-time" class="server">
+              <td>External API Call Time</td>
+              <td></td>
+            </tr>
+            <tr id="res-struct-time" class="server">
+              <td>Response Construction Time</td>
+              <td></td>
+            </tr>
+            <tr id="res-send-time" class="server-client">
+              <td>Response Sending Time</td>
+              <td></td>
+            </tr>
+            <tr id="res-parse-time" class="client">
+              <td>Response Parsing Time</td>
+              <td></td>
+            </tr>
+            <tr id="script-time" class="client">
+              <td>Scripting Time</td>
+              <td></td>
+            </tr>
+            <tr id="render-time" class="client">
+              <td>Rendering Time</td>
+              <td></td>
+            </tr>
+            <tr id="paint-time" class="client">
+              <td>Painting Time</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </main>
   </body>
 </html>
