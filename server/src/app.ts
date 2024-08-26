@@ -42,7 +42,7 @@ app.get("/measure", express.json(), async (req: Request, res: Response) => {
 });
 
 app.post("/mail", (req: Request, res: Response) => {
-  const resStart = performance.now();
+  const resStart = Date.now();
   let { reqStart } = req.body;
   let { parsingTime } = req;
   console.log(reqStart, resStart);

@@ -58,7 +58,7 @@ app.get("/measure", express_1.default.json(), async (req, res) => {
     }
 });
 app.post("/mail", (req, res) => {
-    const resStart = perf_hooks_1.performance.now();
+    const resStart = Date.now();
     let { reqStart } = req.body;
     let { parsingTime } = req;
     console.log(reqStart, resStart);

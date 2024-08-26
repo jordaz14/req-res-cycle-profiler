@@ -40,7 +40,7 @@ function fetchData(url) {
 }
 function postData(url, data) {
     return __awaiter(this, void 0, void 0, function* () {
-        const reqStart = performance.now();
+        const reqStart = Date.now();
         const combinedData = Object.assign(Object.assign({}, data), { reqStart: reqStart });
         try {
             const request = new Request(url, {
@@ -48,7 +48,7 @@ function postData(url, data) {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(combinedData),
             });
-            const reqStructEnd = performance.now();
+            const reqStructEnd = Date.now();
             const response = yield fetch(request);
             const responseData = yield response.json();
             return { reqStructTime: reqStructEnd - reqStart, responseData };

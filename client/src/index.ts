@@ -32,7 +32,7 @@ async function fetchData<T>(url: string): Promise<T | null> {
 }
 
 async function postData(url: string, data: {}): Promise<any> {
-  const reqStart = performance.now();
+  const reqStart = Date.now();
 
   const combinedData = {
     ...data,
@@ -46,7 +46,7 @@ async function postData(url: string, data: {}): Promise<any> {
       body: JSON.stringify(combinedData),
     });
 
-    const reqStructEnd = performance.now();
+    const reqStructEnd = Date.now();
 
     const response = await fetch(request);
 
