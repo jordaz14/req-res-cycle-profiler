@@ -1,7 +1,12 @@
+import { clientServer } from "./client-server.js";
+import { server } from "./server.js";
+import { serverClient } from "./server-client.js";
+import { client } from "./client.js";
+
 const serverUrl: string = "http://localhost:3000";
 //const serverUrl: string = "https://req-res-lifecycle-viz.onrender.com/";
 
-const notifyIcon: Element | null = document.querySelector("#status");
+const notifyIcon = document.querySelector("#status") as Element;
 
 const sendReqButton = document.querySelector("#send-button");
 sendReqButton?.addEventListener("click", () => {
@@ -62,7 +67,7 @@ async function postData(url: string, data: {}): Promise<any> {
   }
 }
 
-const smallJsonData = {
+const smallJsonData: {} = {
   name: "John Doe",
   email: "john.doe@example.com",
   message: "Hello, world!",

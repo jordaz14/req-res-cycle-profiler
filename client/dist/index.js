@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,6 +7,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { clientServer } from "./client-server.js";
+import { server } from "./server.js";
+import { serverClient } from "./server-client.js";
+import { client } from "./client.js";
 const serverUrl = "http://localhost:3000";
 //const serverUrl: string = "https://req-res-lifecycle-viz.onrender.com/";
 const notifyIcon = document.querySelector("#status");
