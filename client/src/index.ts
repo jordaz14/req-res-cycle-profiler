@@ -67,3 +67,63 @@ const smallJsonData = {
   email: "john.doe@example.com",
   message: "Hello, world!",
 };
+
+const bodyContent = document.querySelector(
+  "#input-card-body-content"
+) as Element;
+
+const navItems: NodeListOf<Element> = document.querySelectorAll(".nav-link");
+
+function addNavEventListeners(): void {
+  for (const item of navItems) {
+    item.addEventListener("click", () => {
+      console.log(item);
+      refreshBodyContent(item.id);
+    });
+  }
+}
+
+addNavEventListeners();
+
+function refreshBodyContent(newContent: string | null): void {
+  bodyContent.innerHTML = "";
+
+  switch (newContent) {
+    case "client-server":
+      for (const el in clientServer) {
+        const elType = el.split("_")[0];
+        console.log(elType);
+        window[elType] = document.createElement(elType);
+        window[elType].textContent = clientServer[el];
+        bodyContent.appendChild(window[elType]);
+      }
+      break;
+    case "server":
+      for (const el in server) {
+        const elType = el.split("_")[0];
+        console.log(elType);
+        window[elType] = document.createElement(elType);
+        window[elType].textContent = server[el];
+        bodyContent.appendChild(window[elType]);
+      }
+      break;
+    case "server-client":
+      for (const el in serverClient) {
+        const elType = el.split("_")[0];
+        console.log(elType);
+        window[elType] = document.createElement(elType);
+        window[elType].textContent = serverClient[el];
+        bodyContent.appendChild(window[elType]);
+      }
+      break;
+    case "client":
+      for (const el in client) {
+        const elType = el.split("_")[0];
+        console.log(elType);
+        window[elType] = document.createElement(elType);
+        window[elType].textContent = client[el];
+        bodyContent.appendChild(window[elType]);
+      }
+      break;
+  }
+}
