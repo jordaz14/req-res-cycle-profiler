@@ -12,7 +12,11 @@ sendReqButton?.addEventListener("click", () => {
     smallJsonData,
   }).then((response) => {
     console.log(response);
-    notifyIcon?.textContent = response.responseData.message;
+    notifyIcon.textContent = response.responseData.message;
+    const audio = new Audio();
+    audio.src = "./assets/got-mail.mp3";
+    audio.volume = 0.01;
+    audio.play();
   });
 });
 

@@ -20,7 +20,11 @@ sendReqButton === null || sendReqButton === void 0 ? void 0 : sendReqButton.addE
         smallJsonData,
     }).then((response) => {
         console.log(response);
-        notifyIcon === null || notifyIcon === void 0 ? void 0 : notifyIcon.textContent = response.responseData.message;
+        notifyIcon.textContent = response.responseData.message;
+        const audio = new Audio();
+        audio.src = "./assets/got-mail.mp3";
+        audio.volume = 0.01;
+        audio.play();
     });
 });
 function fetchData(url) {
