@@ -138,6 +138,22 @@ p {
   width: 100%;
 }
 
+#client-server-content {
+  display: block;
+}
+
+#server-content {
+  display: none;
+}
+
+#server-client-content {
+  display: none;
+}
+
+#client-content {
+  display: none;
+}
+
 table {
   width: 100%;
 }
