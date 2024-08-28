@@ -12,12 +12,13 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-// DB CONFIGURATION
+// CONFIGURES SUPABASE DB
 const supabaseURL = process.env.SUPABASE_URL as string;
 const supabaseKey = process.env.SUPABASE_ANON_KEY as string;
 const supabase = createClient(supabaseURL, supabaseKey);
 
-function measureReqReceivalTime(
+// HANDLES TIME REQUEST WAS RECEIVED
+function measureReqReceivedTime(
   req: Request,
   res: Response,
   next: NextFunction
@@ -27,14 +28,8 @@ function measureReqReceivalTime(
   next();
 }
 
-app.use(measureReqReceivalTime);
-app.use(cors());
-
-function measureJsonParsingTime(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+// TIME TO PARSE REQUEST JSON
+function measureJSONParseTime(req: Request, res: Response, next: NextFunction) {
   const parsingStart: number = performance.now();
 
   express.json()(req, res, () => {
@@ -44,41 +39,51 @@ function measureJsonParsingTime(
   });
 }
 
-app.use(measureJsonParsingTime);
+// EXECUTES MIDDLEWARE
+app.use(measureReqReceivedTime);
+app.use(measureJSONParseTime);
+app.use(cors());
 
-// MEASURES DNS, TCP, & TLS CONNECTION TIMES
-app.get("/measure", express.json(), async (req: Request, res: Response) => {
-  const hostname = "req-res-server.netlify.app";
-  try {
-    const dnsTime = await measureDnsTime(hostname);
-    const tcpTime = await measureTcpTime(hostname, 80);
-    const tlsTime = await measureTlsTime(hostname, 443);
-
-    res.json({ dnsTime, tcpTime, tlsTime });
-  } catch (err) {
-    console.error(err);
-  }
+app.get("/", (req: Request, res: Response) => {
+  res.send({ message: "Welcome to the Landing Page." });
 });
 
-app.post("/mail", async (req: Request, res: Response) => {
+app.post("/measure", async (req: Request, res: Response) => {
+  const hostname = "req-res-server.netlify.app";
+
+  // TIME FOR DNS, TCP, AND TLS CONNECTIONS
+  const dnsTime = await measureDnsTime(hostname);
+  const tcpTime = await measureTcpTime(hostname, 80);
+  const tlsTime = await measureTlsTime(hostname, 443);
+
+  // Capture start of Response
   const resStart = Date.now();
+
+  // Capture start of Request from Request payload
   let { reqStart } = req.body;
+
+  // Capture received time of Request & time to parse Request from middleware
   let { parsingTime, receivedTime } = req;
-  // This can also be considered all other middleware executions
+
+  // TIME FOR REQUEST TO REACH SERVER
   const requestSendingTime = (receivedTime as number) - reqStart;
+
+  // TIME FOR MIDDLEWARE TO EXECUTE (LESS PARSING TIME)
   const middleWareExecTime = resStart - (receivedTime as number);
 
-  // BUSINESS LOGIC
-  const logicStart = performance.now();
-  const LOOPS = 10e7;
-  for (let i = 0; i < LOOPS; i++) {
+  // TIME FOR BUSINESS LOGIC TO EXECUTE
+  const busLogicStart = performance.now();
+
+  // Performs heavy computation
+  for (let i = 0; i < 10e7; i++) {
     let counter = i;
     counter++;
   }
-  const logicEnd = performance.now();
-  const logicTime = logicEnd - logicStart;
 
-  // DB QUERY TIME
+  const busLogicEnd = performance.now();
+  const busLogicTime = busLogicEnd - busLogicStart;
+
+  // TIME FOR DB TO EXECUTE QUERY
   const dbQueryStart = performance.now();
 
   const { data, error } = await supabase
@@ -95,43 +100,48 @@ app.post("/mail", async (req: Request, res: Response) => {
   const dbQueryEnd = performance.now();
   const dbQueryTime: number = dbQueryEnd - dbQueryStart;
 
+  // Capture start of Response Construction
   const resStructStart = performance.now();
 
-  interface Payload {
+  interface ServerData {
+    dnsTime: number;
+    tcpTime: number;
+    tlsTime: number;
     reqSendingTime: number;
     reqParsingTime: number | undefined;
     middleWareExecTime: number;
-    logicTime: number;
+    busLogicTime: number;
     dbTime: number;
     message: string;
     [key: string]: any;
   }
 
-  const payload: Payload = {
+  const serverData: ServerData = {
+    dnsTime: dnsTime,
+    tcpTime: tcpTime,
+    tlsTime: tlsTime,
     reqSendingTime: requestSendingTime,
     reqParsingTime: parsingTime,
     middleWareExecTime: middleWareExecTime,
-    logicTime: logicTime,
+    busLogicTime: busLogicTime,
     dbTime: dbQueryTime,
     message: "You got mail!",
   };
 
+  // TIME FOR RESPONSE CONSTRUCTION
   const resStructEnd = performance.now();
   const resStructTime = resStructEnd - resStructStart;
 
-  payload.resStructTime = resStructTime;
+  serverData.resStructTime = resStructTime;
 
   const resEnd = Date.now();
 
-  payload.resEndTime = resEnd;
+  serverData.resEndTime = resEnd;
 
-  res.send(payload);
+  res.send(serverData);
 });
 
-app.get("/", (req: Request, res: Response) => {
-  res.send({ message: "Welcome to the Landing Page." });
-});
-
+// HANDLES TIME TO FIND DNS
 function measureDnsTime(hostname: string): Promise<number> {
   return new Promise((resolve, reject) => {
     const start = Date.now();
@@ -142,6 +152,7 @@ function measureDnsTime(hostname: string): Promise<number> {
   });
 }
 
+// HANDLES TIME TO ESTABLISH TCP HANDSHAKE
 function measureTcpTime(hostname: string, port: number): Promise<number> {
   return new Promise((resolve, reject) => {
     const start = Date.now();
@@ -154,6 +165,7 @@ function measureTcpTime(hostname: string, port: number): Promise<number> {
   });
 }
 
+// HANDLES TIME TO ESTABLISH TLS HANDSHAKE
 function measureTlsTime(hostname: string, port: number): Promise<number> {
   return new Promise((resolve, reject) => {
     const start = Date.now();
