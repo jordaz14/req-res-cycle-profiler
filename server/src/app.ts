@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
+import { createClient } from "@supabase/supabase-js";
 import cors from "cors";
 import { performance } from "perf_hooks";
 import * as dns from "dns";
@@ -9,6 +10,22 @@ import { json } from "stream/consumers";
 const app = express();
 const port = process.env.PORT || 3000;
 
+// DB CONFIGURATION
+const supabaseURL = process.env.SUPABASE_URL as string;
+const supabaseKey = process.env.SUPABASE_ANON_KEY as string;
+const supabase = createClient(supabaseURL, supabaseKey);
+
+function measureReqReceivalTime(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const reqReceived = Date.now();
+  req.receivedTime = reqReceived;
+  next();
+}
+
+app.use(measureReqReceivalTime);
 app.use(cors());
 
 function measureJsonParsingTime(
@@ -58,7 +75,37 @@ app.post("/mail", (req: Request, res: Response) => {
   const logicEnd = performance.now();
   const logicTime = logicEnd - logicStart;
 
-  res.send({
+  // DB QUERY TIME
+  const dbQueryStart = performance.now();
+
+  const { data, error } = await supabase
+    .from("messages")
+    .select("message")
+    .eq("username", "Bob");
+
+  if (error) {
+    console.error(error);
+  }
+
+  console.log(data);
+
+  const dbQueryEnd = performance.now();
+  const dbQueryTime: number = dbQueryEnd - dbQueryStart;
+
+  const resStructStart = performance.now();
+
+  interface Payload {
+    reqSendingTime: number;
+    reqParsingTime: number | undefined;
+    middleWareExecTime: number;
+    logicTime: number;
+    dbTime: number;
+    message: string;
+    [key: string]: any;
+  }
+
+  const payload: Payload = {
+    reqSendingTime: requestSendingTime,
     reqParsingTime: parsingTime,
     routingTime: routingTime,
     logicTime: logicTime,

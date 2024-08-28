@@ -27,6 +27,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const supabase_js_1 = require("@supabase/supabase-js");
 const cors_1 = __importDefault(require("cors"));
 const perf_hooks_1 = require("perf_hooks");
 const dns = __importStar(require("dns"));
@@ -34,6 +35,16 @@ const net = __importStar(require("net"));
 const tls = __importStar(require("tls"));
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
+// DB CONFIGURATION
+const supabaseURL = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_ANON_KEY;
+const supabase = (0, supabase_js_1.createClient)(supabaseURL, supabaseKey);
+function measureReqReceivalTime(req, res, next) {
+    const reqReceived = Date.now();
+    req.receivedTime = reqReceived;
+    next();
+}
+app.use(measureReqReceivalTime);
 app.use((0, cors_1.default)());
 function measureJsonParsingTime(req, res, next) {
     const parsingStart = perf_hooks_1.performance.now();
@@ -72,7 +83,21 @@ app.post("/mail", (req, res) => {
     }
     const logicEnd = perf_hooks_1.performance.now();
     const logicTime = logicEnd - logicStart;
-    res.send({
+    // DB QUERY TIME
+    const dbQueryStart = perf_hooks_1.performance.now();
+    const { data, error } = await supabase
+        .from("messages")
+        .select("message")
+        .eq("username", "Bob");
+    if (error) {
+        console.error(error);
+    }
+    console.log(data);
+    const dbQueryEnd = perf_hooks_1.performance.now();
+    const dbQueryTime = dbQueryEnd - dbQueryStart;
+    const resStructStart = perf_hooks_1.performance.now();
+    const payload = {
+        reqSendingTime: requestSendingTime,
         reqParsingTime: parsingTime,
         routingTime: routingTime,
         logicTime: logicTime,
