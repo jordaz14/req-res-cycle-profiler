@@ -27,13 +27,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const supabase_js_1 = require("@supabase/supabase-js");
 const cors_1 = __importDefault(require("cors"));
+const dotenv_1 = __importDefault(require("dotenv"));
 const perf_hooks_1 = require("perf_hooks");
 const dns = __importStar(require("dns"));
 const net = __importStar(require("net"));
 const tls = __importStar(require("tls"));
+dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
+// DB CONFIGURATION
+const supabaseURL = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_ANON_KEY;
+const supabase = (0, supabase_js_1.createClient)(supabaseURL, supabaseKey);
+function measureReqReceivalTime(req, res, next) {
+    const reqReceived = Date.now();
+    req.receivedTime = reqReceived;
+    next();
+}
+app.use(measureReqReceivalTime);
 app.use((0, cors_1.default)());
 function measureJsonParsingTime(req, res, next) {
     const parsingStart = perf_hooks_1.performance.now();
@@ -57,59 +70,81 @@ app.get("/measure", express_1.default.json(), async (req, res) => {
         console.error(err);
     }
 });
-app.post("/mail", (req, res) => {
+app.post("/mail", async (req, res) => {
     const resStart = Date.now();
     let { reqStart } = req.body;
-    let { parsingTime } = req;
+    let { parsingTime, receivedTime } = req;
     // This can also be considered all other middleware executions
-    const routingTime = resStart - reqStart - parsingTime;
+    const requestSendingTime = receivedTime - reqStart;
+    const middleWareExecTime = resStart - receivedTime;
     // BUSINESS LOGIC
     const logicStart = perf_hooks_1.performance.now();
-    const LOOPS = 10e8;
+    const LOOPS = 10e7;
     for (let i = 0; i < LOOPS; i++) {
         let counter = i;
         counter++;
     }
     const logicEnd = perf_hooks_1.performance.now();
     const logicTime = logicEnd - logicStart;
-    res.send({
+    // DB QUERY TIME
+    const dbQueryStart = perf_hooks_1.performance.now();
+    const { data, error } = await supabase
+        .from("messages")
+        .select("message")
+        .eq("username", "Bob");
+    if (error) {
+        console.error(error);
+    }
+    console.log(data);
+    const dbQueryEnd = perf_hooks_1.performance.now();
+    const dbQueryTime = dbQueryEnd - dbQueryStart;
+    const resStructStart = perf_hooks_1.performance.now();
+    const payload = {
+        reqSendingTime: requestSendingTime,
         reqParsingTime: parsingTime,
-        routingTime: routingTime,
+        middleWareExecTime: middleWareExecTime,
         logicTime: logicTime,
+        dbTime: dbQueryTime,
         message: "You got mail!",
-    });
+    };
+    const resStructEnd = perf_hooks_1.performance.now();
+    const resStructTime = resStructEnd - resStructStart;
+    payload.resStructTime = resStructTime;
+    const resEnd = Date.now();
+    payload.resEndTime = resEnd;
+    res.send(payload);
 });
 app.get("/", (req, res) => {
     res.send({ message: "Welcome to the Landing Page." });
 });
 function measureDnsTime(hostname) {
     return new Promise((resolve, reject) => {
-        const start = perf_hooks_1.performance.now();
+        const start = Date.now();
         dns.lookup(hostname, (err) => {
             if (err)
                 reject(err);
             else
-                resolve(perf_hooks_1.performance.now() - start);
+                resolve(Date.now() - start);
         });
     });
 }
 function measureTcpTime(hostname, port) {
     return new Promise((resolve, reject) => {
-        const start = perf_hooks_1.performance.now();
+        const start = Date.now();
         const socket = net.createConnection(port, hostname);
         socket.on("connect", () => {
             socket.end();
-            resolve(perf_hooks_1.performance.now() - start);
+            resolve(Date.now() - start);
         });
         socket.on("error", reject);
     });
 }
 function measureTlsTime(hostname, port) {
     return new Promise((resolve, reject) => {
-        const start = perf_hooks_1.performance.now();
+        const start = Date.now();
         const socket = tls.connect(port, hostname, {}, () => {
             socket.end();
-            resolve(perf_hooks_1.performance.now() - start);
+            resolve(Date.now() - start);
         });
         socket.on("error", reject);
     });

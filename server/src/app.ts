@@ -1,14 +1,33 @@
 import express, { NextFunction, Request, Response } from "express";
+import { createClient } from "@supabase/supabase-js";
 import cors from "cors";
+import dotenv from "dotenv";
 import { performance } from "perf_hooks";
 import * as dns from "dns";
 import * as net from "net";
 import * as tls from "tls";
-import { json } from "stream/consumers";
+
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+// DB CONFIGURATION
+const supabaseURL = process.env.SUPABASE_URL as string;
+const supabaseKey = process.env.SUPABASE_ANON_KEY as string;
+const supabase = createClient(supabaseURL, supabaseKey);
+
+function measureReqReceivalTime(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const reqReceived = Date.now();
+  req.receivedTime = reqReceived;
+  next();
+}
+
+app.use(measureReqReceivalTime);
 app.use(cors());
 
 function measureJsonParsingTime(
@@ -16,10 +35,10 @@ function measureJsonParsingTime(
   res: Response,
   next: NextFunction
 ) {
-  const parsingStart = performance.now();
+  const parsingStart: number = performance.now();
 
   express.json()(req, res, () => {
-    const parsingEnd = performance.now();
+    const parsingEnd: number = performance.now();
     req.parsingTime = parsingEnd - parsingStart;
     next();
   });
@@ -41,16 +60,17 @@ app.get("/measure", express.json(), async (req: Request, res: Response) => {
   }
 });
 
-app.post("/mail", (req: Request, res: Response) => {
+app.post("/mail", async (req: Request, res: Response) => {
   const resStart = Date.now();
   let { reqStart } = req.body;
-  let { parsingTime } = req;
+  let { parsingTime, receivedTime } = req;
   // This can also be considered all other middleware executions
-  const routingTime = resStart - reqStart - (parsingTime as number);
+  const requestSendingTime = (receivedTime as number) - reqStart;
+  const middleWareExecTime = resStart - (receivedTime as number);
 
   // BUSINESS LOGIC
   const logicStart = performance.now();
-  const LOOPS = 10e8;
+  const LOOPS = 10e7;
   for (let i = 0; i < LOOPS; i++) {
     let counter = i;
     counter++;
@@ -58,12 +78,54 @@ app.post("/mail", (req: Request, res: Response) => {
   const logicEnd = performance.now();
   const logicTime = logicEnd - logicStart;
 
-  res.send({
+  // DB QUERY TIME
+  const dbQueryStart = performance.now();
+
+  const { data, error } = await supabase
+    .from("messages")
+    .select("message")
+    .eq("username", "Bob");
+
+  if (error) {
+    console.error(error);
+  }
+
+  console.log(data);
+
+  const dbQueryEnd = performance.now();
+  const dbQueryTime: number = dbQueryEnd - dbQueryStart;
+
+  const resStructStart = performance.now();
+
+  interface Payload {
+    reqSendingTime: number;
+    reqParsingTime: number | undefined;
+    middleWareExecTime: number;
+    logicTime: number;
+    dbTime: number;
+    message: string;
+    [key: string]: any;
+  }
+
+  const payload: Payload = {
+    reqSendingTime: requestSendingTime,
     reqParsingTime: parsingTime,
-    routingTime: routingTime,
+    middleWareExecTime: middleWareExecTime,
     logicTime: logicTime,
+    dbTime: dbQueryTime,
     message: "You got mail!",
-  });
+  };
+
+  const resStructEnd = performance.now();
+  const resStructTime = resStructEnd - resStructStart;
+
+  payload.resStructTime = resStructTime;
+
+  const resEnd = Date.now();
+
+  payload.resEndTime = resEnd;
+
+  res.send(payload);
 });
 
 app.get("/", (req: Request, res: Response) => {
@@ -72,21 +134,21 @@ app.get("/", (req: Request, res: Response) => {
 
 function measureDnsTime(hostname: string): Promise<number> {
   return new Promise((resolve, reject) => {
-    const start = performance.now();
+    const start = Date.now();
     dns.lookup(hostname, (err) => {
       if (err) reject(err);
-      else resolve(performance.now() - start);
+      else resolve(Date.now() - start);
     });
   });
 }
 
 function measureTcpTime(hostname: string, port: number): Promise<number> {
   return new Promise((resolve, reject) => {
-    const start = performance.now();
+    const start = Date.now();
     const socket = net.createConnection(port, hostname);
     socket.on("connect", () => {
       socket.end();
-      resolve(performance.now() - start);
+      resolve(Date.now() - start);
     });
     socket.on("error", reject);
   });
@@ -94,10 +156,10 @@ function measureTcpTime(hostname: string, port: number): Promise<number> {
 
 function measureTlsTime(hostname: string, port: number): Promise<number> {
   return new Promise((resolve, reject) => {
-    const start = performance.now();
+    const start = Date.now();
     const socket = tls.connect(port, hostname, {}, () => {
       socket.end();
-      resolve(performance.now() - start);
+      resolve(Date.now() - start);
     });
     socket.on("error", reject);
   });

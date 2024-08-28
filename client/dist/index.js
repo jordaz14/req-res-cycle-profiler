@@ -13,20 +13,44 @@ import { serverClient } from "./server-client.js";
 import { client } from "./client.js";
 const serverUrl = "http://localhost:3000";
 //const serverUrl: string = "https://req-res-lifecycle-viz.onrender.com/";
-const notifyIcon = document.querySelector("#status");
+const times = {
+    dns: undefined,
+    tcp: undefined,
+    tls: undefined,
+};
+const notifyLoading = document.querySelector("#notify-icon > .loader");
+const notifyResponse = document.querySelector("#notify-icon > p");
 const sendReqButton = document.querySelector("#send-button");
 sendReqButton === null || sendReqButton === void 0 ? void 0 : sendReqButton.addEventListener("click", () => {
+    notifyLoading.style.display = "block";
+    notifyResponse.textContent = " ";
     fetchData(`${serverUrl}/measure`).then((response) => {
         console.log(response);
     });
     postData(`${serverUrl}/mail`, {
         smallJsonData,
     }).then((response) => {
+        const resReceived = Date.now();
+        const resSendingTime = resReceived - response.responseData.resEndTime;
         console.log(response);
-        notifyIcon.textContent = response.responseData.message;
+        const scriptingStart = Date.now();
+        function performHeavyCalculation() {
+            for (let i = 0; i < 1e9; i++) {
+                let counter = i;
+                counter++;
+            }
+        }
+        performHeavyCalculation();
+        const scriptingEnd = Date.now();
+        const scriptingTime = scriptingEnd - scriptingStart;
+        console.log(scriptingTime);
+        const reflowStart = Date.now();
+        notifyLoading.style.display = "none";
+        notifyResponse.textContent = response.responseData.message;
+        const reflowEnd = Date.now();
         const audio = new Audio();
         audio.src = "./assets/got-mail.mp3";
-        audio.volume = 0.01;
+        audio.volume = 0.3;
         audio.play();
     });
 });
@@ -57,8 +81,14 @@ function postData(url, data) {
             });
             const reqStructEnd = Date.now();
             const response = yield fetch(request);
+            const resParseStart = Date.now();
             const responseData = yield response.json();
-            return { reqStructTime: reqStructEnd - reqStart, responseData };
+            const resParseEnd = Date.now();
+            return {
+                reqStructTime: reqStructEnd - reqStart,
+                resParseTime: resParseEnd - resParseStart,
+                responseData,
+            };
         }
         catch (error) {
             console.error(error);
@@ -70,24 +100,23 @@ const smallJsonData = {
     email: "john.doe@example.com",
     message: "Hello, world!",
 };
-const bodyContent = document.querySelector("#input-card-body-content");
+const bodyContent = document.querySelector("#input-card-body");
 const navItems = document.querySelectorAll(".nav-link");
 function addNavEventListeners() {
     for (const item of navItems) {
         item.addEventListener("click", () => {
-            console.log(item);
             refreshBodyContent(item.id);
         });
     }
 }
 addNavEventListeners();
+refreshBodyContent("client-server");
 function refreshBodyContent(newContent) {
     bodyContent.innerHTML = "";
     switch (newContent) {
         case "client-server":
             for (const el in clientServer) {
                 const elType = el.split("_")[0];
-                console.log(elType);
                 window[elType] = document.createElement(elType);
                 window[elType].textContent = clientServer[el];
                 bodyContent.appendChild(window[elType]);
@@ -96,7 +125,6 @@ function refreshBodyContent(newContent) {
         case "server":
             for (const el in server) {
                 const elType = el.split("_")[0];
-                console.log(elType);
                 window[elType] = document.createElement(elType);
                 window[elType].textContent = server[el];
                 bodyContent.appendChild(window[elType]);
@@ -105,7 +133,6 @@ function refreshBodyContent(newContent) {
         case "server-client":
             for (const el in serverClient) {
                 const elType = el.split("_")[0];
-                console.log(elType);
                 window[elType] = document.createElement(elType);
                 window[elType].textContent = serverClient[el];
                 bodyContent.appendChild(window[elType]);
@@ -114,7 +141,6 @@ function refreshBodyContent(newContent) {
         case "client":
             for (const el in client) {
                 const elType = el.split("_")[0];
-                console.log(elType);
                 window[elType] = document.createElement(elType);
                 window[elType].textContent = client[el];
                 bodyContent.appendChild(window[elType]);
