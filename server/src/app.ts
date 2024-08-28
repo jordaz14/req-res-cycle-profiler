@@ -35,10 +35,10 @@ function measureJsonParsingTime(
   res: Response,
   next: NextFunction
 ) {
-  const parsingStart = performance.now();
+  const parsingStart: number = performance.now();
 
   express.json()(req, res, () => {
-    const parsingEnd = performance.now();
+    const parsingEnd: number = performance.now();
     req.parsingTime = parsingEnd - parsingStart;
     next();
   });
