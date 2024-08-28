@@ -7,33 +7,41 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { clientServer } from "./client-server.js";
-import { server } from "./server.js";
-import { serverClient } from "./server-client.js";
-import { client } from "./client.js";
 const serverUrl = "http://localhost:3000";
 //const serverUrl: string = "https://req-res-lifecycle-viz.onrender.com/";
-const times = {
-    dns: undefined,
-    tcp: undefined,
-    tls: undefined,
-};
+// INITIALIZE ELEMENTS FOR NAV
+const navItems = document.querySelectorAll(".nav-link");
+// INITIALIZE ELEMENTS FOR BODY CONTENT
+const clientServerBodyContent = document.querySelector("#client-server-content ");
+const serverBodyContent = document.querySelector("#server-content ");
+const serverClientBodyContent = document.querySelector("#server-client-content ");
+const clientBodyContent = document.querySelector("#client-content ");
+// INITIALIZE ELEMENTS FOR LOADING STATUS
 const notifyLoading = document.querySelector("#notify-icon > .loader");
 const notifyResponse = document.querySelector("#notify-icon > p");
+// INITIALIZE BUTTON TO SEND REQUESTS
 const sendReqButton = document.querySelector("#send-button");
+// TEMPLATE FOR POST PAYLOADS
+const smallJsonData = {
+    name: "John Doe",
+    email: "john.doe@example.com",
+    message: "Hello, world!",
+};
 sendReqButton === null || sendReqButton === void 0 ? void 0 : sendReqButton.addEventListener("click", () => {
+    // Handles loading status icons
     notifyLoading.style.display = "block";
     notifyResponse.textContent = " ";
-    fetchData(`${serverUrl}/measure`).then((response) => {
-        console.log(response);
-    });
-    postData(`${serverUrl}/mail`, {
+    // Posts JSON template to /measure endpoint
+    postData(`${serverUrl}/measure`, {
         smallJsonData,
     }).then((response) => {
-        const resReceived = Date.now();
-        const resSendingTime = resReceived - response.responseData.resEndTime;
-        console.log(response);
+        // Capture time response was received from return of postData
+        const resReceived = response.resReceived;
+        // TIME FOR RESPONSE TO REACH CLIENT FROM SERVER
+        const resSendingTime = resReceived - response.serverData.resEndTime;
+        // TIME FOR JS LOGIC TO EXECUTE
         const scriptingStart = Date.now();
+        // Performs heavy computation
         function performHeavyCalculation() {
             for (let i = 0; i < 1e9; i++) {
                 let counter = i;
@@ -43,10 +51,10 @@ sendReqButton === null || sendReqButton === void 0 ? void 0 : sendReqButton.addE
         performHeavyCalculation();
         const scriptingEnd = Date.now();
         const scriptingTime = scriptingEnd - scriptingStart;
-        console.log(scriptingTime);
+        // TIME FOR 
         const reflowStart = Date.now();
         notifyLoading.style.display = "none";
-        notifyResponse.textContent = response.responseData.message;
+        notifyResponse.textContent = response.serverData.message;
         const reflowEnd = Date.now();
         const audio = new Audio();
         audio.src = "./assets/got-mail.mp3";
@@ -54,54 +62,7 @@ sendReqButton === null || sendReqButton === void 0 ? void 0 : sendReqButton.addE
         audio.play();
     });
 });
-function fetchData(url) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const response = yield fetch(url);
-            if (!response.ok) {
-                throw new Error(`${response.status}`);
-            }
-            return response.json();
-        }
-        catch (error) {
-            console.error(error);
-            return null;
-        }
-    });
-}
-function postData(url, data) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const reqStart = Date.now();
-        const combinedData = Object.assign(Object.assign({}, data), { reqStart: reqStart });
-        try {
-            const request = new Request(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(combinedData),
-            });
-            const reqStructEnd = Date.now();
-            const response = yield fetch(request);
-            const resParseStart = Date.now();
-            const responseData = yield response.json();
-            const resParseEnd = Date.now();
-            return {
-                reqStructTime: reqStructEnd - reqStart,
-                resParseTime: resParseEnd - resParseStart,
-                responseData,
-            };
-        }
-        catch (error) {
-            console.error(error);
-        }
-    });
-}
-const smallJsonData = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    message: "Hello, world!",
-};
-const bodyContent = document.querySelector("#input-card-body");
-const navItems = document.querySelectorAll(".nav-link");
+// ADDS CLICK LISTENER TO EVERY NAV ITEM
 function addNavEventListeners() {
     for (const item of navItems) {
         item.addEventListener("click", () => {
@@ -109,42 +70,66 @@ function addNavEventListeners() {
         });
     }
 }
-addNavEventListeners();
-refreshBodyContent("client-server");
+// DNY
 function refreshBodyContent(newContent) {
-    bodyContent.innerHTML = "";
+    clientServerBodyContent.style.display = "none";
+    serverBodyContent.style.display = "none";
+    serverClientBodyContent.style.display = "none";
+    clientBodyContent.style.display = "none";
     switch (newContent) {
         case "client-server":
-            for (const el in clientServer) {
-                const elType = el.split("_")[0];
-                window[elType] = document.createElement(elType);
-                window[elType].textContent = clientServer[el];
-                bodyContent.appendChild(window[elType]);
-            }
+            clientServerBodyContent.style.display = "block";
             break;
         case "server":
-            for (const el in server) {
-                const elType = el.split("_")[0];
-                window[elType] = document.createElement(elType);
-                window[elType].textContent = server[el];
-                bodyContent.appendChild(window[elType]);
-            }
+            serverBodyContent.style.display = "block";
             break;
         case "server-client":
-            for (const el in serverClient) {
-                const elType = el.split("_")[0];
-                window[elType] = document.createElement(elType);
-                window[elType].textContent = serverClient[el];
-                bodyContent.appendChild(window[elType]);
-            }
+            serverClientBodyContent.style.display = "block";
             break;
         case "client":
-            for (const el in client) {
-                const elType = el.split("_")[0];
-                window[elType] = document.createElement(elType);
-                window[elType].textContent = client[el];
-                bodyContent.appendChild(window[elType]);
-            }
+            clientBodyContent.style.display = "block";
             break;
     }
 }
+// HANDLES POST REQUESTS WITH TIME CAPTURES
+function postData(url, data) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Capture start of Request
+        const reqStart = Date.now();
+        // Combine start of Request with data passed as argument
+        const combinedData = Object.assign(Object.assign({}, data), { reqStart: reqStart });
+        try {
+            // Construct Request with combined data
+            const request = new Request(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(combinedData),
+            });
+            // Capture end of Request construction
+            const reqStructEnd = Date.now();
+            const reqStructTime = reqStructEnd - reqStart;
+            // POST Data to endpoint
+            const response = yield fetch(request);
+            // Capture time when Response was received
+            const resReceived = Date.now();
+            // Parse Response to JSON
+            const serverData = yield response.json();
+            // Capture end of Response parsing
+            const resParseEnd = Date.now();
+            const resParseTime = resParseEnd - resReceived;
+            // Return request structuring time, response parsing time, and response payload
+            return {
+                reqStructTime: reqStructTime,
+                reqSendTime: 0,
+                resReceived: resReceived,
+                resParseTime: resParseTime,
+                serverData,
+            };
+        }
+        catch (error) {
+            console.error(error);
+        }
+    });
+}
+addNavEventListeners();
+export {};
