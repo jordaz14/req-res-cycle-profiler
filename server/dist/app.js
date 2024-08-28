@@ -70,15 +70,16 @@ app.get("/measure", express_1.default.json(), async (req, res) => {
         console.error(err);
     }
 });
-app.post("/mail", (req, res) => {
+app.post("/mail", async (req, res) => {
     const resStart = Date.now();
     let { reqStart } = req.body;
-    let { parsingTime } = req;
+    let { parsingTime, receivedTime } = req;
     // This can also be considered all other middleware executions
-    const routingTime = resStart - reqStart - parsingTime;
+    const requestSendingTime = receivedTime - reqStart;
+    const middleWareExecTime = resStart - receivedTime;
     // BUSINESS LOGIC
     const logicStart = perf_hooks_1.performance.now();
-    const LOOPS = 10e8;
+    const LOOPS = 10e7;
     for (let i = 0; i < LOOPS; i++) {
         let counter = i;
         counter++;
@@ -101,10 +102,17 @@ app.post("/mail", (req, res) => {
     const payload = {
         reqSendingTime: requestSendingTime,
         reqParsingTime: parsingTime,
-        routingTime: routingTime,
+        middleWareExecTime: middleWareExecTime,
         logicTime: logicTime,
+        dbTime: dbQueryTime,
         message: "You got mail!",
-    });
+    };
+    const resStructEnd = perf_hooks_1.performance.now();
+    const resStructTime = resStructEnd - resStructStart;
+    payload.resStructTime = resStructTime;
+    const resEnd = Date.now();
+    payload.resEndTime = resEnd;
+    res.send(payload);
 });
 app.get("/", (req, res) => {
     res.send({ message: "Welcome to the Landing Page." });

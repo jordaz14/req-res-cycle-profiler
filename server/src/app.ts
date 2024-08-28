@@ -60,16 +60,17 @@ app.get("/measure", express.json(), async (req: Request, res: Response) => {
   }
 });
 
-app.post("/mail", (req: Request, res: Response) => {
+app.post("/mail", async (req: Request, res: Response) => {
   const resStart = Date.now();
   let { reqStart } = req.body;
-  let { parsingTime } = req;
+  let { parsingTime, receivedTime } = req;
   // This can also be considered all other middleware executions
-  const routingTime = resStart - reqStart - (parsingTime as number);
+  const requestSendingTime = (receivedTime as number) - reqStart;
+  const middleWareExecTime = resStart - (receivedTime as number);
 
   // BUSINESS LOGIC
   const logicStart = performance.now();
-  const LOOPS = 10e8;
+  const LOOPS = 10e7;
   for (let i = 0; i < LOOPS; i++) {
     let counter = i;
     counter++;
@@ -109,10 +110,22 @@ app.post("/mail", (req: Request, res: Response) => {
   const payload: Payload = {
     reqSendingTime: requestSendingTime,
     reqParsingTime: parsingTime,
-    routingTime: routingTime,
+    middleWareExecTime: middleWareExecTime,
     logicTime: logicTime,
+    dbTime: dbQueryTime,
     message: "You got mail!",
-  });
+  };
+
+  const resStructEnd = performance.now();
+  const resStructTime = resStructEnd - resStructStart;
+
+  payload.resStructTime = resStructTime;
+
+  const resEnd = Date.now();
+
+  payload.resEndTime = resEnd;
+
+  res.send(payload);
 });
 
 app.get("/", (req: Request, res: Response) => {
