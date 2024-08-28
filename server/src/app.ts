@@ -121,21 +121,21 @@ app.get("/", (req: Request, res: Response) => {
 
 function measureDnsTime(hostname: string): Promise<number> {
   return new Promise((resolve, reject) => {
-    const start = performance.now();
+    const start = Date.now();
     dns.lookup(hostname, (err) => {
       if (err) reject(err);
-      else resolve(performance.now() - start);
+      else resolve(Date.now() - start);
     });
   });
 }
 
 function measureTcpTime(hostname: string, port: number): Promise<number> {
   return new Promise((resolve, reject) => {
-    const start = performance.now();
+    const start = Date.now();
     const socket = net.createConnection(port, hostname);
     socket.on("connect", () => {
       socket.end();
-      resolve(performance.now() - start);
+      resolve(Date.now() - start);
     });
     socket.on("error", reject);
   });
@@ -143,10 +143,10 @@ function measureTcpTime(hostname: string, port: number): Promise<number> {
 
 function measureTlsTime(hostname: string, port: number): Promise<number> {
   return new Promise((resolve, reject) => {
-    const start = performance.now();
+    const start = Date.now();
     const socket = tls.connect(port, hostname, {}, () => {
       socket.end();
-      resolve(performance.now() - start);
+      resolve(Date.now() - start);
     });
     socket.on("error", reject);
   });

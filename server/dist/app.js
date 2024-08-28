@@ -111,32 +111,32 @@ app.get("/", (req, res) => {
 });
 function measureDnsTime(hostname) {
     return new Promise((resolve, reject) => {
-        const start = perf_hooks_1.performance.now();
+        const start = Date.now();
         dns.lookup(hostname, (err) => {
             if (err)
                 reject(err);
             else
-                resolve(perf_hooks_1.performance.now() - start);
+                resolve(Date.now() - start);
         });
     });
 }
 function measureTcpTime(hostname, port) {
     return new Promise((resolve, reject) => {
-        const start = perf_hooks_1.performance.now();
+        const start = Date.now();
         const socket = net.createConnection(port, hostname);
         socket.on("connect", () => {
             socket.end();
-            resolve(perf_hooks_1.performance.now() - start);
+            resolve(Date.now() - start);
         });
         socket.on("error", reject);
     });
 }
 function measureTlsTime(hostname, port) {
     return new Promise((resolve, reject) => {
-        const start = perf_hooks_1.performance.now();
+        const start = Date.now();
         const socket = tls.connect(port, hostname, {}, () => {
             socket.end();
-            resolve(perf_hooks_1.performance.now() - start);
+            resolve(Date.now() - start);
         });
         socket.on("error", reject);
     });
