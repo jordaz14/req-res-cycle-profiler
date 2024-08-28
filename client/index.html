@@ -48,82 +48,117 @@
         </div>
       </div>
       <div id="output-card">
-        <div id="status"></div>
-        <button id="send-button">Send Request</button>
-        <table>
-          <thead>
-            <tr>
-              <th>Metric</th>
-              <th>Time (ms)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr id="dns-time" class="client-server">
-              <td>DNS Resolution Time</td>
-              <td></td>
-            </tr>
-            <tr id="tcp-time" class="client-server">
-              <td>TCP Connection Time</td>
-              <td></td>
-            </tr>
-            <tr id="tls-time" class="client-server">
-              <td>TLS Handshake Time</td>
-              <td></td>
-            </tr>
-            <tr id="req-struct-time" class="client-server">
-              <td>Request Construction Time</td>
-              <td></td>
-            </tr>
-            <tr id="req-send-time" class="client-server">
-              <td>Request Sending Time</td>
-              <td></td>
-            </tr>
-            <tr id="req-parse-time" class="server">
-              <td>Request Parsing Time</td>
-              <td></td>
-            </tr>
-            <tr id="route-time" class="server">
-              <td>Routing Time</td>
-              <td></td>
-            </tr>
-            <tr id="business-logic-time" class="server">
-              <td>Business Logic Execution Time</td>
-              <td></td>
-            </tr>
-            <tr id="db-time" class="server">
-              <td>Database Query Time</td>
-              <td></td>
-            </tr>
-            <tr id="api-time" class="server">
-              <td>External API Call Time</td>
-              <td></td>
-            </tr>
-            <tr id="res-struct-time" class="server">
-              <td>Response Construction Time</td>
-              <td></td>
-            </tr>
-            <tr id="res-send-time" class="server-client">
-              <td>Response Sending Time</td>
-              <td></td>
-            </tr>
-            <tr id="res-parse-time" class="client">
-              <td>Response Parsing Time</td>
-              <td></td>
-            </tr>
-            <tr id="script-time" class="client">
-              <td>Scripting Time</td>
-              <td></td>
-            </tr>
-            <tr id="render-time" class="client">
-              <td>Rendering Time</td>
-              <td></td>
-            </tr>
-            <tr id="paint-time" class="client">
-              <td>Painting Time</td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
+        <div id="request-container">
+          <div id="notify-icon">
+            <div class="loader"></div>
+            <p></p>
+          </div>
+          <button id="send-button">Send Request</button>
+        </div>
+        <div id="data-table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Time Metric</th>
+                <th>Current (ms)</th>
+                <th>Prior (ms)</th>
+                <th>Delta</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="dns-time" class="client-server">
+                <td>DNS Resolution</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="tcp-time" class="client-server">
+                <td>TCP Handshake</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="tls-time" class="client-server">
+                <td>TLS Handshake</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="req-struct-time" class="client-server">
+                <td>Request Construction</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="req-send-time" class="client-server">
+                <td>Request Sending</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="req-parse-time" class="server">
+                <td>Request Parsing</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="route-time" class="server">
+                <td>Middleware Execution</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="business-logic-time" class="server">
+                <td>Business Logic Execution</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="db-time" class="server">
+                <td>Database Query</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="res-struct-time" class="server">
+                <td>Response Construction</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="res-send-time" class="server-client">
+                <td>Response Sending</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="res-parse-time" class="client">
+                <td>Response Parsing</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="script-time" class="client">
+                <td>Scripting</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="render-time" class="client">
+                <td>Reflow</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="paint-time" class="client">
+                <td>Repaint</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </main>
   </body>
