@@ -29,10 +29,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const supabase_js_1 = require("@supabase/supabase-js");
 const cors_1 = __importDefault(require("cors"));
+const dotenv_1 = __importDefault(require("dotenv"));
 const perf_hooks_1 = require("perf_hooks");
 const dns = __importStar(require("dns"));
 const net = __importStar(require("net"));
 const tls = __importStar(require("tls"));
+dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
 // DB CONFIGURATION
