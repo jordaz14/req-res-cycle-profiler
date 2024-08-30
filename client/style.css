@@ -38,6 +38,10 @@ td {
   padding: 2px;
 }
 
+tr {
+  background-color: white;
+}
+
 h2 {
   font-size: 1.2rem;
 }
@@ -214,6 +218,28 @@ thead th {
   to {
     transform: rotate(0.5turn);
   }
+}
+
+.data-cell {
+  text-align: center;
+  font-weight: lighter;
+}
+
+.green-cell {
+  font-weight: lighter;
+  text-align: center;
+  background-color: rgb(221, 240, 221);
+}
+
+.red-cell {
+  font-weight: lighter;
+  text-align: center;
+  background-color: rgb(243, 218, 218);
+}
+
+.data-header {
+  text-align: center;
+  width: 100px;
 }
 
 /* RESPONSIVE */
