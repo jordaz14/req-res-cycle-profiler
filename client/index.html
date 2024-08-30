@@ -123,9 +123,186 @@
               to ensure that everything is correctly positioned and sized.
             </p>
             <h2>Repaint</h2>
-            <p>This sentence describes Database Query</p>
+            <p>
+              Repaint is when the browser updates the visual appearance of a
+              page after the layout has been calculated, updating styles,
+              colors, and content on the screen.
+            </p>
+          </div>
+          <!-- Filter Content Section -->
+          <div id="filter-content">
+            <form id="filter-form">
+              <!-- Hosting Radio -->
+              <div>
+                <h2>Hosting Region</h2>
+                <label>
+                  <input type="radio" name="region" value="useast" checked />
+                  US-East
+                </label>
+
+                <label>
+                  <input type="radio" name="region" value="uswest" />
+                  US-West
+                </label>
+
+                <label>
+                  <input type="radio" name="region" value="asia" />
+                  Asia
+                </label>
+                <p>
+                  Region where server is hosted - this will impact DNS
+                  Resolution, TCP Handshake, TLS Handshake, and Request Sending
+                  times
+                </p>
+              </div>
+              <!-- Request Payload Radio -->
+              <div>
+                <h2>Request Payload Size</h2>
+                <label>
+                  <input
+                    type="radio"
+                    name="req-payload"
+                    value="small"
+                    checked
+                  />
+                  Small
+                </label>
+
+                <label>
+                  <input type="radio" name="req-payload" value="medium" />
+                  Medium
+                </label>
+
+                <label>
+                  <input type="radio" name="req-payload" value="large" />
+                  Large
+                </label>
+                <p>
+                  Amount of data being sent to the server - this will impact
+                  Request Construction, Request Sending, and Request Parsing
+                  times.
+                </p>
+              </div>
+              <!-- Server-Side Algorithm Radio -->
+              <div>
+                <h2>Server-Side Algorithmic Complexity</h2>
+                <label>
+                  <input type="radio" name="server-alg" value="logn" checked />
+                  Logn
+                </label>
+
+                <label>
+                  <input type="radio" name="server-alg" value="on" />
+                  On
+                </label>
+
+                <label>
+                  <input type="radio" name="server-alg" value="o2n" />
+                  O2n
+                </label>
+                <p>
+                  Times complexity of server-side algorithms - this will impact
+                  Business Logic Execution times.
+                </p>
+              </div>
+              <!-- SQL Complexity Radio -->
+              <div>
+                <h2>SQL Query Complexity</h2>
+                <label>
+                  <input type="radio" name="sql" value="low" checked />
+                  Low
+                </label>
+
+                <label>
+                  <input type="radio" name="sql" value="medium" />
+                  Medium
+                </label>
+
+                <label>
+                  <input type="radio" name="sql" value="high" />
+                  High
+                </label>
+                <p>
+                  Complexity of query to database - this will impact Database
+                  Execution Times.
+                </p>
+              </div>
+              <!-- Response Payload Radio -->
+              <div>
+                <h2>Response Payload Size</h2>
+                <label>
+                  <input
+                    type="radio"
+                    name="res-payload"
+                    value="small"
+                    checked
+                  />
+                  Small
+                </label>
+
+                <label>
+                  <input type="radio" name="res-payload" value="medium" />
+                  Medium
+                </label>
+
+                <label>
+                  <input type="radio" name="res-payload" value="large" />
+                  Large
+                </label>
+                <p>
+                  Amount of data being sent to the client - this will impact
+                  Response Construction, Response Sending, and Response Parsing
+                  times.
+                </p>
+              </div>
+              <!-- Client-Side Algorithm Radio -->
+              <div>
+                <h2>Client-Side Algorithmic Complexity</h2>
+                <label>
+                  <input type="radio" name="client-alg" value="logn" checked />
+                  Logn
+                </label>
+
+                <label>
+                  <input type="radio" name="client-alg" value="on" />
+                  On
+                </label>
+
+                <label>
+                  <input type="radio" name="client-alg" value="o2n" />
+                  O2n
+                </label>
+                <p>
+                  Time complexity of client-side algorithms - this will impact
+                  Scripting times.
+                </p>
+              </div>
+              <!-- DOM Radio -->
+              <div>
+                <h2>DOM Manipulation</h2>
+                <label>
+                  <input type="radio" name="dom" value="low" checked />
+                  Low
+                </label>
+
+                <label>
+                  <input type="radio" name="dom" value="medium" />
+                  Medium
+                </label>
+
+                <label>
+                  <input type="radio" name="dom" value="high" />
+                  High
+                </label>
+                <p>
+                  Amount of browser rendering - this will impact Scripting,
+                  Reflow, and Repaint times.
+                </p>
+              </div>
+            </form>
           </div>
         </div>
+        <button id="filter-button">Add Filters</button>
       </div>
       <!-- RIGHT (BOTTOM) SIDE OF PAGE -->
       <div id="output-card">
