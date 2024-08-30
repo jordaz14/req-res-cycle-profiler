@@ -60,6 +60,7 @@ p {
   flex: 1;
   padding: 20px 40px;
   gap: 20px;
+  position: relative;
 }
 
 #input-card-body {
@@ -75,6 +76,10 @@ p {
 
 #input-card-body > p {
   margin-bottom: 10px;
+}
+
+#filter-content > form > p {
+  margin-bottom: 0px;
 }
 
 #output-card {
@@ -98,7 +103,8 @@ p {
   background-size: 4px 4px;
 }
 
-#send-button {
+#send-button,
+#filter-button {
   padding: 10px;
   color: white;
   border: none;
@@ -107,8 +113,13 @@ p {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-#send-button:hover {
+#send-button:hover,
+#filter-button:hover {
   background-color: rgb(164, 86, 236);
+}
+
+#filter-content {
+  color: white;
 }
 
 #notify-icon {
@@ -122,6 +133,7 @@ p {
   justify-content: center;
   align-items: center;
   flex: 1;
+  font-weight: bolder;
 }
 
 #request-container {
@@ -158,6 +170,10 @@ p {
   display: none;
 }
 
+#input-card-body p {
+  margin-bottom: 20px;
+}
+
 table {
   width: 100%;
 }
@@ -170,23 +186,6 @@ thead th {
   color: white;
   font-weight: normal;
   padding: 5px;
-}
-
-/* Styling for Table */
-.client-server {
-  background-color: rgb(253, 242, 206);
-}
-
-.server {
-  background-color: rgb(214, 224, 243);
-}
-
-.server-client {
-  background-color: rgb(225, 248, 225);
-}
-
-.client {
-  background-color: rgb(240, 212, 212);
 }
 
 .nav-link {
