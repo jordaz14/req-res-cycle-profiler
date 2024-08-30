@@ -314,13 +314,13 @@
           <button id="send-button">Send Request</button>
         </div>
         <div id="data-table-container">
-          <table>
+          <table id="measurement-table">
             <thead>
               <tr>
-                <th>Time Metric</th>
-                <th>Current (ms)</th>
-                <th>Prior (ms)</th>
-                <th>Delta</th>
+                <th>Time (milliseconds)</th>
+                <th class="data-header">Attempt N</th>
+                <th class="data-header">Attempt N-1</th>
+                <th class="data-header">Variance</th>
               </tr>
             </thead>
             <tbody>
