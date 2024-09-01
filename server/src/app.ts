@@ -56,7 +56,7 @@ app.post("/measure", async (req: Request, res: Response) => {
   const tcpTime = await measureTcpTime(hostname, 80);
   const tlsTime = await measureTlsTime(hostname, 443);
 
-  // Capture start of Response
+  // Capture 'start' of Response
   const resStart = Date.now();
 
   // Capture start of Request from Request payload
@@ -65,26 +65,29 @@ app.post("/measure", async (req: Request, res: Response) => {
   // Capture received time of Request & time to parse Request from middleware
   let { parsingTime, receivedTime } = req;
 
-  // TIME FOR REQUEST TO REACH SERVER
-  const requestSendingTime = (receivedTime as number) - reqStart;
-
   // TIME FOR MIDDLEWARE TO EXECUTE (LESS PARSING TIME)
-  const middleWareExecTime = resStart - (receivedTime as number);
+  const middleWareExecTime =
+    resStart -
+    (receivedTime as number) -
+    (parsingTime as number) -
+    dnsTime -
+    tcpTime -
+    tlsTime;
 
   // TIME FOR BUSINESS LOGIC TO EXECUTE
-  const busLogicStart = performance.now();
+  const busLogicStart = Date.now();
 
   // Performs heavy computation
-  for (let i = 0; i < 10e7; i++) {
+  for (let i = 0; i < 10e8; i++) {
     let counter = i;
     counter++;
   }
 
-  const busLogicEnd = performance.now();
+  const busLogicEnd = Date.now();
   const busLogicTime = busLogicEnd - busLogicStart;
 
   // TIME FOR DB TO EXECUTE QUERY
-  const dbQueryStart = performance.now();
+  const dbQueryStart = Date.now();
 
   const { data, error } = await supabase
     .from("messages")
@@ -95,19 +98,16 @@ app.post("/measure", async (req: Request, res: Response) => {
     console.error(error);
   }
 
-  console.log(data);
-
-  const dbQueryEnd = performance.now();
+  const dbQueryEnd = Date.now();
   const dbQueryTime: number = dbQueryEnd - dbQueryStart;
 
   // Capture start of Response Construction
-  const resStructStart = performance.now();
+  const resStructStart = Date.now();
 
   interface ServerData {
     dnsTime: number;
     tcpTime: number;
     tlsTime: number;
-    reqSendingTime: number;
     reqParsingTime: number | undefined;
     middleWareExecTime: number;
     busLogicTime: number;
@@ -120,7 +120,7 @@ app.post("/measure", async (req: Request, res: Response) => {
     dnsTime: dnsTime,
     tcpTime: tcpTime,
     tlsTime: tlsTime,
-    reqSendingTime: requestSendingTime,
+    reqReceived: receivedTime,
     reqParsingTime: parsingTime,
     middleWareExecTime: middleWareExecTime,
     busLogicTime: busLogicTime,
@@ -129,7 +129,7 @@ app.post("/measure", async (req: Request, res: Response) => {
   };
 
   // TIME FOR RESPONSE CONSTRUCTION
-  const resStructEnd = performance.now();
+  const resStructEnd = Date.now();
   const resStructTime = resStructEnd - resStructStart;
 
   serverData.resStructTime = resStructTime;
