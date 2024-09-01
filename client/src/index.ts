@@ -6,10 +6,17 @@ import { client } from "./client.js";
 const serverUrl: string = "http://localhost:3000";
 //const serverUrl: string = "https://req-res-lifecycle-viz.onrender.com/";
 
+const filterRadioButtons = document.querySelectorAll("input");
+filterRadioButtons.forEach((radio) => {
+  radio.addEventListener("click", () => console.log(radio.name, radio.value));
+});
+
+
 // INITIALIZE ELEMENTS FOR NAV
 const navItems: NodeListOf<Element> = document.querySelectorAll(".nav-link");
 
 // INITIALIZE ELEMENTS FOR BODY CONTENT
+const inputCard = document.querySelector("#input-card-body") as HTMLElement;
 const clientServerBodyContent = document.querySelector(
   "#client-server-content "
 ) as HTMLElement;
@@ -21,6 +28,9 @@ const serverClientBodyContent = document.querySelector(
 ) as HTMLElement;
 const clientBodyContent = document.querySelector(
   "#client-content "
+) as HTMLElement;
+const filterBodyContent = document.querySelector(
+  "#filter-content"
 ) as HTMLElement;
 
 // INITIALIZE ELEMENTS FOR LOADING STATUS
@@ -64,6 +74,8 @@ const smallJsonData: {} = {
   message: "Hello, world!",
 };
 
+let initialLoad = true;
+
 sendReqButton?.addEventListener("click", () => {
   // Handles loading status icons
   notifyLoading.style.display = "block";
@@ -79,10 +91,10 @@ sendReqButton?.addEventListener("click", () => {
     // TIME FOR RESPONSE TO REACH CLIENT FROM SERVER
     const resSendingTime = resReceived - response.serverData.resEndTime;
 
-    // TIME FOR JS LOGIC TO EXECUTE
+    // Capture time scripting logic begins
     const scriptingStart = Date.now();
 
-    // Performs heavy computation
+    // Performs heavy computation in scripting logic
     function performHeavyCalculation() {
       for (let i = 0; i < 1e9; i++) {
         let counter = i;
@@ -91,15 +103,10 @@ sendReqButton?.addEventListener("click", () => {
     }
 
     performHeavyCalculation();
-    const scriptingEnd = Date.now();
-    const scriptingTime = scriptingEnd - scriptingStart;
-    
-    // TIME FOR 
-    const reflowStart = Date.now();
+
+    // Misc. scripting logic for notification status
     notifyLoading.style.display = "none";
     notifyResponse.textContent = response.serverData.message;
-    const reflowEnd = Date.now();
-
     const audio = new Audio();
     audio.src = "./assets/got-mail.mp3";
     audio.volume = 0.3;
@@ -201,12 +208,14 @@ function addNavEventListeners(): void {
   }
 }
 
-// DNY
+// DYNAMICALLY CHANGE BODY CONTENT
 function refreshBodyContent(newContent: string | null): void {
+  inputCard.style.backgroundColor = "white";
   clientServerBodyContent.style.display = "none";
   serverBodyContent.style.display = "none";
   serverClientBodyContent.style.display = "none";
   clientBodyContent.style.display = "none";
+  filterBodyContent.style.display = "none";
 
   switch (newContent) {
     case "client-server":
@@ -221,8 +230,16 @@ function refreshBodyContent(newContent: string | null): void {
     case "client":
       clientBodyContent.style.display = "block";
       break;
+    case "filter":
+      inputCard.style.backgroundColor = "#4b4b4b";
+      filterBodyContent.style.display = "block";
   }
 }
+
+filterButton.addEventListener("click", () => {
+  console.log("click");
+  refreshBodyContent("filter");
+});
 
 // HANDLES POST REQUESTS WITH TIME CAPTURES
 async function postData(url: string, data: {}): Promise<any> {
