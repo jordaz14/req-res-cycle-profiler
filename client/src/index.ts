@@ -151,6 +151,47 @@ sendReqButton?.addEventListener("click", () => {
   });
 });
 
+function updateColumn(data: any): void {
+  timeTableBody.innerHTML = "";
+
+  for (const key in data) {
+    if (data.hasOwnProperty(key)) {
+      const row = document.createElement("tr");
+
+      const cellKey = document.createElement("td");
+      cellKey.textContent = key.replace(/_/g, " ");
+      row.appendChild(cellKey);
+
+      const newCellValue = document.createElement("td");
+      newCellValue.textContent = data[key].new;
+      newCellValue.className = "data-cell";
+      row.appendChild(newCellValue);
+
+      const oldCellValue = document.createElement("td");
+      !initialLoad ? (oldCellValue.textContent = data[key].old) : null;
+      oldCellValue.className = "data-cell";
+      row.appendChild(oldCellValue);
+
+      const deltaCellValue = document.createElement("td");
+      !initialLoad
+        ? (deltaCellValue.textContent = String(data[key].new - data[key].old))
+        : null;
+      if (data[key].new > data[key].old && !initialLoad) {
+        deltaCellValue.className = "red-cell";
+      } else if (data[key].new < data[key].old) {
+        deltaCellValue.className = "green-cell";
+      } else {
+        deltaCellValue.className = "data-cell";
+      }
+      row.appendChild(deltaCellValue);
+
+      timeTableBody.appendChild(row);
+    }
+  }
+
+  initialLoad = false;
+}
+
 // ADDS CLICK LISTENER TO EVERY NAV ITEM
 function addNavEventListeners(): void {
   for (const item of navItems) {
@@ -206,6 +247,8 @@ async function postData(url: string, data: {}): Promise<any> {
     const reqConstructionEnd = Date.now();
     const reqConstructionTime = reqConstructionEnd - reqStart;
 
+    // Capture time when Request was sent
+    const reqSend = Date.now();
     // POST Data to endpoint
     const response = await fetch(request);
 
