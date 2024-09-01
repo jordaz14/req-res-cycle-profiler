@@ -30,10 +30,10 @@ function measureReqReceivedTime(
 
 // TIME TO PARSE REQUEST JSON
 function measureJSONParseTime(req: Request, res: Response, next: NextFunction) {
-  const parsingStart: number = performance.now();
+  const parsingStart: number = Date.now();
 
   express.json()(req, res, () => {
-    const parsingEnd: number = performance.now();
+    const parsingEnd: number = Date.now();
     req.parsingTime = parsingEnd - parsingStart;
     next();
   });
