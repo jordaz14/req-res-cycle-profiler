@@ -30,7 +30,6 @@ const express_1 = __importDefault(require("express"));
 const supabase_js_1 = require("@supabase/supabase-js");
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const perf_hooks_1 = require("perf_hooks");
 const dns = __importStar(require("dns"));
 const net = __importStar(require("net"));
 const tls = __importStar(require("tls"));
@@ -49,9 +48,9 @@ function measureReqReceivedTime(req, res, next) {
 }
 // TIME TO PARSE REQUEST JSON
 function measureJSONParseTime(req, res, next) {
-    const parsingStart = perf_hooks_1.performance.now();
+    const parsingStart = Date.now();
     express_1.default.json()(req, res, () => {
-        const parsingEnd = perf_hooks_1.performance.now();
+        const parsingEnd = Date.now();
         req.parsingTime = parsingEnd - parsingStart;
         next();
     });
@@ -69,27 +68,30 @@ app.post("/measure", async (req, res) => {
     const dnsTime = await measureDnsTime(hostname);
     const tcpTime = await measureTcpTime(hostname, 80);
     const tlsTime = await measureTlsTime(hostname, 443);
-    // Capture start of Response
+    // Capture 'start' of Response
     const resStart = Date.now();
     // Capture start of Request from Request payload
     let { reqStart } = req.body;
     // Capture received time of Request & time to parse Request from middleware
     let { parsingTime, receivedTime } = req;
-    // TIME FOR REQUEST TO REACH SERVER
-    const requestSendingTime = receivedTime - reqStart;
     // TIME FOR MIDDLEWARE TO EXECUTE (LESS PARSING TIME)
-    const middleWareExecTime = resStart - receivedTime;
+    const middleWareExecTime = resStart -
+        receivedTime -
+        parsingTime -
+        dnsTime -
+        tcpTime -
+        tlsTime;
     // TIME FOR BUSINESS LOGIC TO EXECUTE
-    const busLogicStart = perf_hooks_1.performance.now();
+    const busLogicStart = Date.now();
     // Performs heavy computation
-    for (let i = 0; i < 10e7; i++) {
+    for (let i = 0; i < 10e8; i++) {
         let counter = i;
         counter++;
     }
-    const busLogicEnd = perf_hooks_1.performance.now();
+    const busLogicEnd = Date.now();
     const busLogicTime = busLogicEnd - busLogicStart;
     // TIME FOR DB TO EXECUTE QUERY
-    const dbQueryStart = perf_hooks_1.performance.now();
+    const dbQueryStart = Date.now();
     const { data, error } = await supabase
         .from("messages")
         .select("message")
@@ -97,16 +99,15 @@ app.post("/measure", async (req, res) => {
     if (error) {
         console.error(error);
     }
-    console.log(data);
-    const dbQueryEnd = perf_hooks_1.performance.now();
+    const dbQueryEnd = Date.now();
     const dbQueryTime = dbQueryEnd - dbQueryStart;
     // Capture start of Response Construction
-    const resStructStart = perf_hooks_1.performance.now();
+    const resStructStart = Date.now();
     const serverData = {
         dnsTime: dnsTime,
         tcpTime: tcpTime,
         tlsTime: tlsTime,
-        reqSendingTime: requestSendingTime,
+        reqReceived: receivedTime,
         reqParsingTime: parsingTime,
         middleWareExecTime: middleWareExecTime,
         busLogicTime: busLogicTime,
@@ -114,7 +115,7 @@ app.post("/measure", async (req, res) => {
         message: "You got mail!",
     };
     // TIME FOR RESPONSE CONSTRUCTION
-    const resStructEnd = perf_hooks_1.performance.now();
+    const resStructEnd = Date.now();
     const resStructTime = resStructEnd - resStructStart;
     serverData.resStructTime = resStructTime;
     const resEnd = Date.now();
