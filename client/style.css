@@ -123,6 +123,7 @@ label {
 }
 
 #filter-content {
+  display: hidden;
   color: white;
 }
 
