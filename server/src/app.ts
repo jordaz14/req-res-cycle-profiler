@@ -105,38 +105,31 @@ app.post("/measure", async (req: Request, res: Response) => {
   switch (filters.sql.status) {
     case "low":
       let { data: lowData, error: lowError } = await supabase
-        .from("messages")
-        .select("message")
-        .eq("username", "Bob");
+        .from("example")
+        .select("*")
+        .eq("id", "10000");
 
       console.log(lowData);
+      console.log("low exec");
 
       if (lowError) {
         console.error(lowError);
       }
       break;
-    case "medium":
-      let { data: medData, error: medError } = await supabase
-        .from("messages")
-        .select("message")
-        .eq("username", "Bob");
 
-      console.log(medData);
-
-      if (medError) {
-        console.error(medError);
-      }
     case "high":
       let { data: highData, error: highError } = await supabase
-        .from("messages")
-        .select("message")
-        .eq("username", "Bob");
+        .from("example")
+        .select("*")
+        .eq("class", "foo");
 
       console.log(highData);
+      console.log("high exec");
 
       if (highError) {
         console.error(highError);
       }
+      break;
   }
 
   const dbQueryEnd = Date.now();

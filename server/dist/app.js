@@ -49,7 +49,7 @@ function measureReqReceivedTime(req, res, next) {
 // TIME TO PARSE REQUEST JSON
 function measureJSONParseTime(req, res, next) {
     const parsingStart = Date.now();
-    express_1.default.json()(req, res, () => {
+    express_1.default.json({ limit: "150mb" })(req, res, () => {
         const parsingEnd = Date.now();
         req.parsingTime = parsingEnd - parsingStart;
         next();
@@ -70,8 +70,6 @@ app.post("/measure", async (req, res) => {
     const tlsTime = await measureTlsTime(hostname, 443);
     // Capture 'start' of Response
     const resStart = Date.now();
-    // Capture start of Request from Request payload
-    let { reqStart } = req.body;
     // Capture received time of Request & time to parse Request from middleware
     let { parsingTime, receivedTime } = req;
     // TIME FOR MIDDLEWARE TO EXECUTE (LESS PARSING TIME)
@@ -83,41 +81,51 @@ app.post("/measure", async (req, res) => {
         tlsTime;
     // TIME FOR BUSINESS LOGIC TO EXECUTE
     const busLogicStart = Date.now();
-    /*
     // Update filters for subsequent computations
     filters.server_alg.status = req.body.reqPayload.server_alg;
     filters.sql.status = req.body.reqPayload.sql;
     filters.res_payload.status = req.body.reqPayload.res_payload;
-  
-    console.log(filters);
-  
     let busLogicFunc;
     const arr = Array(2000).fill(0);
-  
     switch (filters.server_alg.status) {
-      case "linear":
-        busLogicFunc = filters.server_alg.linear;
-        break;
-      case "quadratic":
-        busLogicFunc = filters.server_alg.quadratic;
-        break;
-      case "cubic":
-        busLogicFunc = filters.server_alg.cubic;
-        break;
+        case "linear":
+            busLogicFunc = filters.server_alg.linear;
+            break;
+        case "quadratic":
+            busLogicFunc = filters.server_alg.quadratic;
+            break;
+        case "cubic":
+            busLogicFunc = filters.server_alg.cubic;
+            break;
     }
-  
     busLogicFunc?.(arr);
-    */
     const busLogicEnd = Date.now();
     const busLogicTime = busLogicEnd - busLogicStart;
     // TIME FOR DB TO EXECUTE QUERY
     const dbQueryStart = Date.now();
-    const { data, error } = await supabase
-        .from("messages")
-        .select("message")
-        .eq("username", "Bob");
-    if (error) {
-        console.error(error);
+    switch (filters.sql.status) {
+        case "low":
+            let { data: lowData, error: lowError } = await supabase
+                .from("example")
+                .select("*")
+                .eq("id", "10000");
+            console.log(lowData);
+            console.log("low exec");
+            if (lowError) {
+                console.error(lowError);
+            }
+            break;
+        case "high":
+            let { data: highData, error: highError } = await supabase
+                .from("example")
+                .select("*")
+                .eq("class", "foo");
+            console.log(highData);
+            console.log("high exec");
+            if (highError) {
+                console.error(highError);
+            }
+            break;
     }
     const dbQueryEnd = Date.now();
     const dbQueryTime = dbQueryEnd - dbQueryStart;
@@ -134,6 +142,17 @@ app.post("/measure", async (req, res) => {
         dbTime: dbQueryTime,
         message: "You got mail!",
     };
+    switch (filters.res_payload.status) {
+        case "small":
+            serverData.simulatedData = filters.res_payload.small;
+            break;
+        case "medium":
+            serverData.simulatedData = filters.res_payload.medium;
+            break;
+        case "large":
+            serverData.simulatedData = filters.res_payload.large;
+            break;
+    }
     // TIME FOR RESPONSE CONSTRUCTION
     const resStructEnd = Date.now();
     const resStructTime = resStructEnd - resStructStart;
