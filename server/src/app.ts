@@ -102,13 +102,41 @@ app.post("/measure", async (req: Request, res: Response) => {
   // TIME FOR DB TO EXECUTE QUERY
   const dbQueryStart = Date.now();
 
-  const { data, error } = await supabase
-    .from("messages")
-    .select("message")
-    .eq("username", "Bob");
+  switch (filters.sql.status) {
+    case "low":
+      let { data: lowData, error: lowError } = await supabase
+        .from("messages")
+        .select("message")
+        .eq("username", "Bob");
 
-  if (error) {
-    console.error(error);
+      console.log(lowData);
+
+      if (lowError) {
+        console.error(lowError);
+      }
+      break;
+    case "medium":
+      let { data: medData, error: medError } = await supabase
+        .from("messages")
+        .select("message")
+        .eq("username", "Bob");
+
+      console.log(medData);
+
+      if (medError) {
+        console.error(medError);
+      }
+    case "high":
+      let { data: highData, error: highError } = await supabase
+        .from("messages")
+        .select("message")
+        .eq("username", "Bob");
+
+      console.log(highData);
+
+      if (highError) {
+        console.error(highError);
+      }
   }
 
   const dbQueryEnd = Date.now();
