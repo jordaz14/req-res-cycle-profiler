@@ -218,6 +218,75 @@ function measureTlsTime(hostname: string, port: number): Promise<number> {
   });
 }
 
+// REQUEST PAYLOADS FILTER
+const smallJsonData = {
+  id: 1,
+  recipientName: "Chris Nolan",
+  address: "789 Sunset Blvd",
+  city: "Los Angeles",
+  state: "CA",
+  zipCode: "90028",
+};
+
+const mediumJsonData = {
+  data: [smallJsonData],
+};
+
+const largeJsonData = {
+  data: [mediumJsonData],
+};
+
+function addJsonData(json: any, loop: any, data: any) {
+  for (let i = 0; i < loop; i++) {
+    json.data.push(data);
+  }
+}
+
+addJsonData(mediumJsonData, 10000, smallJsonData);
+addJsonData(largeJsonData, 100, mediumJsonData);
+
+// SERVER SIDE ALGO COMPLEXITY
+
+const linearTimeAlgo = (arr: number[]): void => {
+  for (let i = 0; i < arr.length; i++) {
+    let num = i;
+  }
+};
+
+const quadraticTimeAlgo = (arr: number[]): void => {
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < arr.length; j++) {
+      let num = i + j;
+    }
+  }
+};
+
+const cubicTimeAlgo = (arr: number[]): void => {
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < arr.length; j++) {
+      for (let k = 0; k < arr.length; k++) {
+        let num = i + j + k;
+      }
+    }
+  }
+};
+
+const filters = {
+  server_alg: {
+    status: "linear",
+    linear: linearTimeAlgo,
+    quadratic: quadraticTimeAlgo,
+    cubic: cubicTimeAlgo,
+  },
+  sql: { status: "low" },
+  res_payload: {
+    status: "small",
+    small: smallJsonData,
+    medium: mediumJsonData,
+    large: largeJsonData,
+  },
+};
+
 app.listen(Number(port), "0.0.0.0", () => {
   console.log(`Server is listening on ${port}`);
 });
