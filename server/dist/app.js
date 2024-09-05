@@ -56,9 +56,9 @@ function measureJSONParseTime(req, res, next) {
     });
 }
 // EXECUTES MIDDLEWARE
+app.use((0, cors_1.default)());
 app.use(measureReqReceivedTime);
 app.use(measureJSONParseTime);
-app.use((0, cors_1.default)());
 app.get("/", (req, res) => {
     res.send({ message: "Welcome to the Landing Page." });
 });

@@ -40,9 +40,9 @@ function measureJSONParseTime(req: Request, res: Response, next: NextFunction) {
 }
 
 // EXECUTES MIDDLEWARE
+app.use(cors());
 app.use(measureReqReceivedTime);
 app.use(measureJSONParseTime);
-app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {
   res.send({ message: "Welcome to the Landing Page." });
