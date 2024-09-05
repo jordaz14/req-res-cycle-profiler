@@ -30,20 +30,22 @@ sendReqButton?.addEventListener("click", () => {
   notifyLoading.style.display = "block";
   notifyResponse.textContent = " ";
 
-  let reqPayload = {};
+  let reqPayload = {
+    server_alg: filters.server_alg.status,
+    sql: filters.sql.status,
+    res_payload: filters.res_payload.status,
+    simulatedData: {},
+  };
 
   switch (filters.req_payload.status) {
     case "small":
-      console.log("sm");
-      reqPayload = filters.req_payload.small;
+      reqPayload.simulatedData = filters.req_payload.small;
       break;
     case "medium":
-      console.log("md");
-      reqPayload = filters.req_payload.medium;
+      reqPayload.simulatedData = filters.req_payload.medium;
       break;
     case "large":
-      console.log("lg");
-      reqPayload = filters.req_payload.large;
+      reqPayload.simulatedData = filters.req_payload.large;
       break;
   }
 
