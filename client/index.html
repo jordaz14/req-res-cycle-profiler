@@ -132,29 +132,6 @@
           <!-- Filter Content Section -->
           <div id="filter-content">
             <form id="filter-form">
-              <!-- Hosting Radio -->
-              <div>
-                <h2>Hosting Region</h2>
-                <label>
-                  <input type="radio" name="region" value="useast" checked />
-                  US-East
-                </label>
-
-                <label>
-                  <input type="radio" name="region" value="uswest" />
-                  US-West
-                </label>
-
-                <label>
-                  <input type="radio" name="region" value="asia" />
-                  Asia
-                </label>
-                <p>
-                  Region where server is hosted - this will impact DNS
-                  Resolution, TCP Handshake, TLS Handshake, and Request Sending
-                  times
-                </p>
-              </div>
               <!-- Request Payload Radio -->
               <div>
                 <h2>Request Payload Size</h2>
@@ -165,17 +142,15 @@
                     value="small"
                     checked
                   />
-                  Small
+                  < 1mb
                 </label>
-
                 <label>
                   <input type="radio" name="req-payload" value="medium" />
-                  Medium
+                  1mb
                 </label>
-
                 <label>
                   <input type="radio" name="req-payload" value="large" />
-                  Large
+                  115mb
                 </label>
                 <p>
                   Amount of data being sent to the server - this will impact
@@ -187,18 +162,21 @@
               <div>
                 <h2>Server-Side Algorithmic Complexity</h2>
                 <label>
-                  <input type="radio" name="server-alg" value="logn" checked />
-                  Logn
+                  <input
+                    type="radio"
+                    name="server-alg"
+                    value="linear"
+                    checked
+                  />
+                  Linear
                 </label>
-
                 <label>
-                  <input type="radio" name="server-alg" value="on" />
-                  On
+                  <input type="radio" name="server-alg" value="quadratic" />
+                  Quadratic
                 </label>
-
                 <label>
-                  <input type="radio" name="server-alg" value="o2n" />
-                  O2n
+                  <input type="radio" name="server-alg" value="cubic" />
+                  Cubic
                 </label>
                 <p>
                   Times complexity of server-side algorithms - this will impact
@@ -212,12 +190,10 @@
                   <input type="radio" name="sql" value="low" checked />
                   Low
                 </label>
-
                 <label>
                   <input type="radio" name="sql" value="medium" />
                   Medium
                 </label>
-
                 <label>
                   <input type="radio" name="sql" value="high" />
                   High
@@ -237,16 +213,15 @@
                     value="small"
                     checked
                   />
-                  Small
+                  < 1mb
                 </label>
-
                 <label>
                   <input type="radio" name="res-payload" value="medium" />
-                  Medium
+                  1mb
                 </label>
                 <label>
                   <input type="radio" name="res-payload" value="large" />
-                  Large
+                  115mb
                 </label>
                 <p>
                   Amount of data being sent to the client - this will impact
@@ -258,40 +233,25 @@
               <div>
                 <h2>Client-Side Algorithmic Complexity</h2>
                 <label>
-                  <input type="radio" name="client-alg" value="logn" checked />
-                  Logn
+                  <input
+                    type="radio"
+                    name="client-alg"
+                    value="linear"
+                    checked
+                  />
+                  Linear
                 </label>
                 <label>
-                  <input type="radio" name="client-alg" value="on" />
-                  On
+                  <input type="radio" name="client-alg" value="quadratic" />
+                  Quadratic
                 </label>
                 <label>
-                  <input type="radio" name="client-alg" value="o2n" />
-                  O2n
+                  <input type="radio" name="client-alg" value="cubic" />
+                  Cubic
                 </label>
                 <p>
                   Time complexity of client-side algorithms - this will impact
                   Scripting times.
-                </p>
-              </div>
-              <!-- DOM Radio -->
-              <div>
-                <h2>DOM Manipulation</h2>
-                <label>
-                  <input type="radio" name="dom" value="low" checked />
-                  Low
-                </label>
-                <label>
-                  <input type="radio" name="dom" value="medium" />
-                  Medium
-                </label>
-                <label>
-                  <input type="radio" name="dom" value="high" />
-                  High
-                </label>
-                <p>
-                  Amount of browser rendering - this will impact Scripting,
-                  Reflow, and Repaint times.
                 </p>
               </div>
             </form>
