@@ -62,15 +62,22 @@ sendReqButton?.addEventListener("click", () => {
     // Capture time scripting logic begins
     const scriptingStart = Date.now();
 
-    // Performs heavy computation in scripting logic
-    function performHeavyCalculation() {
-      for (let i = 0; i < 1e9; i++) {
-        let counter = i;
-        counter++;
-      }
+    let scriptingFunc;
+    const arr = Array(2000).fill(0);
+
+    switch (filters.client_alg.status) {
+      case "linear":
+        scriptingFunc = filters.client_alg.linear;
+        break;
+      case "quadratic":
+        scriptingFunc = filters.client_alg.quadratic;
+        break;
+      case "cubic":
+        scriptingFunc = filters.client_alg.cubic;
+        break;
     }
 
-    performHeavyCalculation();
+    scriptingFunc?.(arr);
 
     // Misc. scripting logic for notification status
     notifyLoading.style.display = "none";
