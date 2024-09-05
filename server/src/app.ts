@@ -39,8 +39,13 @@ function measureJSONParseTime(req: Request, res: Response, next: NextFunction) {
   });
 }
 
+const corsOptions = {
+  origin: "https://req-res-client.netlify.app/",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
+};
 // EXECUTES MIDDLEWARE
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(measureReqReceivedTime);
 app.use(measureJSONParseTime);
 
