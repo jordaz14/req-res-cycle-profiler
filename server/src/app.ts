@@ -59,9 +59,6 @@ app.post("/measure", async (req: Request, res: Response) => {
   // Capture 'start' of Response
   const resStart = Date.now();
 
-  // Capture start of Request from Request payload
-  let { reqStart } = req.body;
-
   // Capture received time of Request & time to parse Request from middleware
   let { parsingTime, receivedTime } = req;
 
@@ -77,11 +74,27 @@ app.post("/measure", async (req: Request, res: Response) => {
   // TIME FOR BUSINESS LOGIC TO EXECUTE
   const busLogicStart = Date.now();
 
-  // Performs heavy computation
-  for (let i = 0; i < 10e8; i++) {
-    let counter = i;
-    counter++;
+  // Update filters for subsequent computations
+  filters.server_alg.status = req.body.reqPayload.server_alg;
+  filters.sql.status = req.body.reqPayload.sql;
+  filters.res_payload.status = req.body.reqPayload.res_payload;
+
+  let busLogicFunc;
+  const arr = Array(2000).fill(0);
+
+  switch (filters.server_alg.status) {
+    case "linear":
+      busLogicFunc = filters.server_alg.linear;
+      break;
+    case "quadratic":
+      busLogicFunc = filters.server_alg.quadratic;
+      break;
+    case "cubic":
+      busLogicFunc = filters.server_alg.cubic;
+      break;
   }
+
+  busLogicFunc?.(arr);
 
   const busLogicEnd = Date.now();
   const busLogicTime = busLogicEnd - busLogicStart;
