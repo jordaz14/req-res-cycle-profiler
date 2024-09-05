@@ -13,7 +13,7 @@ import { initTable, updateMeasurements, updateColumn, measurements, } from "./ta
 initContent();
 initFilter();
 initTable();
-const serverUrl = "http://localhost:3000";
+const serverUrl = "https://req-res-server.netlify.app";
 // INITIALIZE ELEMENTS FOR LOADING STATUS
 const notifyLoading = document.querySelector("#notify-icon > .loader");
 const notifyResponse = document.querySelector("#notify-icon > p");

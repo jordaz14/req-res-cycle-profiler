@@ -11,7 +11,7 @@ initContent();
 initFilter();
 initTable();
 
-const serverUrl: string = "http://localhost:3000";
+const serverUrl: string = "https://req-res-server.netlify.app";
 
 // INITIALIZE ELEMENTS FOR LOADING STATUS
 const notifyLoading = document.querySelector(
