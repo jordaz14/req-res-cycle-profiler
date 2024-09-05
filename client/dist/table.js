@@ -16,8 +16,6 @@ export const measurements = {
     Response_Sending: { new: 0, old: 0 },
     Response_Parsing: { new: 0, old: 0 },
     Scripting: { new: 0, old: 0 },
-    Reflow: { new: 0, old: 0 },
-    Repaint: { new: 0, old: 0 },
 };
 const timeTableBody = document.querySelector("#measurement-table > tbody");
 export function updateColumn(data) {
