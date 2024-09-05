@@ -169,6 +169,18 @@ app.post("/measure", async (req: Request, res: Response) => {
     message: "You got mail!",
   };
 
+  switch (filters.res_payload.status) {
+    case "small":
+      serverData.simulatedData = filters.res_payload.small;
+      break;
+    case "medium":
+      serverData.simulatedData = filters.res_payload.medium;
+      break;
+    case "large":
+      serverData.simulatedData = filters.res_payload.large;
+      break;
+  }
+
   // TIME FOR RESPONSE CONSTRUCTION
   const resStructEnd = Date.now();
   const resStructTime = resStructEnd - resStructStart;
