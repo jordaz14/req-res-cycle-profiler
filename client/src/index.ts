@@ -12,7 +12,6 @@ initFilter();
 initTable();
 
 const serverUrl: string = "http://localhost:3000";
-//const serverUrl: string = "https://req-res-lifecycle-viz.onrender.com/";
 
 // INITIALIZE ELEMENTS FOR LOADING STATUS
 const notifyLoading = document.querySelector(
