@@ -14,7 +14,7 @@ initContent();
 initFilter();
 initTable();
 const serverUrl = "http://localhost:3000";
-//const serverUrl: string = "https://req-res-lifecycle-viz.onrender.com/";
+fetch(`${serverUrl}`).then((res) => console.log(res));
 // INITIALIZE ELEMENTS FOR LOADING STATUS
 const notifyLoading = document.querySelector("#notify-icon > .loader");
 const notifyResponse = document.querySelector("#notify-icon > p");
@@ -24,19 +24,21 @@ sendReqButton === null || sendReqButton === void 0 ? void 0 : sendReqButton.addE
     // Handles loading status icons
     notifyLoading.style.display = "block";
     notifyResponse.textContent = " ";
-    let reqPayload = {};
+    let reqPayload = {
+        server_alg: filters.server_alg.status,
+        sql: filters.sql.status,
+        res_payload: filters.res_payload.status,
+        simulatedData: {},
+    };
     switch (filters.req_payload.status) {
         case "small":
-            console.log("sm");
-            reqPayload = filters.req_payload.small;
+            reqPayload.simulatedData = filters.req_payload.small;
             break;
         case "medium":
-            console.log("md");
-            reqPayload = filters.req_payload.medium;
+            reqPayload.simulatedData = filters.req_payload.medium;
             break;
         case "large":
-            console.log("lg");
-            reqPayload = filters.req_payload.large;
+            reqPayload.simulatedData = filters.req_payload.large;
             break;
     }
     console.log(reqPayload);
@@ -50,14 +52,20 @@ sendReqButton === null || sendReqButton === void 0 ? void 0 : sendReqButton.addE
         const resSendingTime = resReceived - response.serverData.resEndTime;
         // Capture time scripting logic begins
         const scriptingStart = Date.now();
-        // Performs heavy computation in scripting logic
-        function performHeavyCalculation() {
-            for (let i = 0; i < 1e9; i++) {
-                let counter = i;
-                counter++;
-            }
+        let scriptingFunc;
+        const arr = Array(2000).fill(0);
+        switch (filters.client_alg.status) {
+            case "linear":
+                scriptingFunc = filters.client_alg.linear;
+                break;
+            case "quadratic":
+                scriptingFunc = filters.client_alg.quadratic;
+                break;
+            case "cubic":
+                scriptingFunc = filters.client_alg.cubic;
+                break;
         }
-        performHeavyCalculation();
+        scriptingFunc === null || scriptingFunc === void 0 ? void 0 : scriptingFunc(arr);
         // Misc. scripting logic for notification status
         notifyLoading.style.display = "none";
         notifyResponse.textContent = response.serverData.message;
