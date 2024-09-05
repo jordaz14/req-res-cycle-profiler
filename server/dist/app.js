@@ -83,11 +83,31 @@ app.post("/measure", async (req, res) => {
         tlsTime;
     // TIME FOR BUSINESS LOGIC TO EXECUTE
     const busLogicStart = Date.now();
-    // Performs heavy computation
-    for (let i = 0; i < 10e8; i++) {
-        let counter = i;
-        counter++;
+    /*
+    // Update filters for subsequent computations
+    filters.server_alg.status = req.body.reqPayload.server_alg;
+    filters.sql.status = req.body.reqPayload.sql;
+    filters.res_payload.status = req.body.reqPayload.res_payload;
+  
+    console.log(filters);
+  
+    let busLogicFunc;
+    const arr = Array(2000).fill(0);
+  
+    switch (filters.server_alg.status) {
+      case "linear":
+        busLogicFunc = filters.server_alg.linear;
+        break;
+      case "quadratic":
+        busLogicFunc = filters.server_alg.quadratic;
+        break;
+      case "cubic":
+        busLogicFunc = filters.server_alg.cubic;
+        break;
     }
+  
+    busLogicFunc?.(arr);
+    */
     const busLogicEnd = Date.now();
     const busLogicTime = busLogicEnd - busLogicStart;
     // TIME FOR DB TO EXECUTE QUERY
@@ -157,6 +177,65 @@ function measureTlsTime(hostname, port) {
         socket.on("error", reject);
     });
 }
+// REQUEST PAYLOADS FILTER
+const smallJsonData = {
+    id: 1,
+    recipientName: "Chris Nolan",
+    address: "789 Sunset Blvd",
+    city: "Los Angeles",
+    state: "CA",
+    zipCode: "90028",
+};
+const mediumJsonData = {
+    data: [smallJsonData],
+};
+const largeJsonData = {
+    data: [mediumJsonData],
+};
+function addJsonData(json, loop, data) {
+    for (let i = 0; i < loop; i++) {
+        json.data.push(data);
+    }
+}
+addJsonData(mediumJsonData, 10000, smallJsonData);
+addJsonData(largeJsonData, 100, mediumJsonData);
+// SERVER SIDE ALGO COMPLEXITY
+const linearTimeAlgo = (arr) => {
+    for (let i = 0; i < arr.length; i++) {
+        let num = i;
+    }
+};
+const quadraticTimeAlgo = (arr) => {
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < arr.length; j++) {
+            let num = i + j;
+        }
+    }
+};
+const cubicTimeAlgo = (arr) => {
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < arr.length; j++) {
+            for (let k = 0; k < arr.length; k++) {
+                let num = i + j + k;
+            }
+        }
+    }
+};
+const filters = {
+    server_alg: {
+        status: "linear",
+        linear: linearTimeAlgo,
+        quadratic: quadraticTimeAlgo,
+        cubic: cubicTimeAlgo,
+    },
+    sql: { status: "low" },
+    res_payload: {
+        status: "small",
+        small: smallJsonData,
+        medium: mediumJsonData,
+        large: largeJsonData,
+    },
+};
 app.listen(Number(port), "0.0.0.0", () => {
     console.log(`Server is listening on ${port}`);
 });
