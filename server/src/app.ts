@@ -32,7 +32,7 @@ function measureReqReceivedTime(
 function measureJSONParseTime(req: Request, res: Response, next: NextFunction) {
   const parsingStart: number = Date.now();
 
-  express.json()(req, res, () => {
+  express.json({ limit: "150mb" })(req, res, () => {
     const parsingEnd: number = Date.now();
     req.parsingTime = parsingEnd - parsingStart;
     next();
