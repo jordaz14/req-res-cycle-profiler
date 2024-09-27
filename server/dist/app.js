@@ -57,8 +57,6 @@ function measureJSONParseTime(req, res, next) {
 }
 const corsOptions = {
     origin: "https://req-res-cycle-profiler-pr-2.onrender.com",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    allowedHeaders: "Content-Type,Authorization",
 };
 // EXECUTES MIDDLEWARE
 app.use((0, cors_1.default)(corsOptions));
@@ -68,6 +66,7 @@ app.get("/", (req, res) => {
     res.send({ message: "Welcome to the Landing Page." });
 });
 app.post("/measure", async (req, res) => {
+    console.log("Beginning to Measure...");
     const hostname = "req-res-cycle-profiler-pr-2.onrender.com";
     // TIME FOR DNS, TCP, AND TLS CONNECTIONS
     const dnsTime = await measureDnsTime(hostname);
