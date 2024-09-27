@@ -1,5 +1,5 @@
 export function initTable() {
-    console.log("table.ts loaded");
+    console.log("table.ts loaded.");
 }
 let initialLoad = true;
 export const measurements = {

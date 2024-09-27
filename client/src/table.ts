@@ -1,5 +1,5 @@
 export function initTable(): any {
-  console.log("table.ts loaded");
+  console.log("table.ts loaded.");
 }
 
 let initialLoad = true;
