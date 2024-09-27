@@ -13,7 +13,7 @@ import { initTable, updateMeasurements, updateColumn, measurements, } from "./ta
 initContent();
 initFilter();
 initTable();
-const serverUrl = "https://req-res-server.netlify.app";
+const serverUrl = "https://req-res-cycle-profiler-production.up.railway.app";
 // INITIALIZE ELEMENTS FOR LOADING STATUS
 const notifyLoading = document.querySelector("#notify-icon > .loader");
 const notifyResponse = document.querySelector("#notify-icon > p");

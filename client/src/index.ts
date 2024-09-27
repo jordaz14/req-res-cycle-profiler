@@ -11,7 +11,7 @@ initContent();
 initFilter();
 initTable();
 
-const serverUrl: string = "https://req-res-server.netlify.app";
+const serverUrl: string = "https://req-res-cycle-profiler-production.up.railway.app";
 
 // INITIALIZE ELEMENTS FOR LOADING STATUS
 const notifyLoading = document.querySelector(
