@@ -53,7 +53,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.post("/measure", async (req: Request, res: Response) => {
-  const hostname = "req-res-cycle-profiler-req-res-cycle-profiler-pr-2.up.railway.app";
+  const hostname = "req-res-cycle-profiler-pr-2.onrender.com";
 
   // TIME FOR DNS, TCP, AND TLS CONNECTIONS
   const dnsTime = await measureDnsTime(hostname);
