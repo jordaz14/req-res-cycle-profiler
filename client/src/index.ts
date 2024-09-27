@@ -11,7 +11,14 @@ initContent();
 initFilter();
 initTable();
 
-const serverUrl: string = "https://req-res-cycle-profiler-req-res-cycle-profiler-pr-2.up.railway.app";
+const serverUrl: string =
+  "https://req-res-cycle-profiler-req-res-cycle-profiler-pr-2.up.railway.app";
+
+// TEST CONNECTION
+fetch(`${serverUrl}/`)
+  .then((response) => response.json())
+  .then((data) => console.log(data))
+  .catch((error) => console.error(error));
 
 // INITIALIZE ELEMENTS FOR LOADING STATUS
 const notifyLoading = document.querySelector(
