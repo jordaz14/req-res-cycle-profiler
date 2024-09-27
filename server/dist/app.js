@@ -56,7 +56,7 @@ function measureJSONParseTime(req, res, next) {
     });
 }
 const corsOptions = {
-    origin: "https://req-res-cycle-profiler-pr-2.onrender.com/",
+    origin: "https://req-res-cycle-profiler-pr-2.onrender.com",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: "Content-Type,Authorization",
 };
