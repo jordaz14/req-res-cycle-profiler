@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="module" src="./dist/index.js" async></script>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
+    <title>Response Times</title>
+  </head>
+  <body>
+    <main>
+      <!-- LEFT (TOP) SIDE OF PAGE -->
+      <div id="input-card">
+        <div id="input-card-header">
+          <h1>Request-Response Lifecycle</h1>
+          <p>
+            The request-response lifecycle is the sequence of steps which occur
+            when your browser makes a request to a server; the server processes
+            that request and queries a database; the server sends back a
+            response; and, the client processes and renders the response.
+          </p>
+        </div>
+        <nav>
+          <button class="nav-link" id="client-server">Client-Server</button>
+          <button class="nav-link" id="server">Server</button>
+          <button class="nav-link" id="server-client">Server-Client</button>
+          <button class="nav-link" id="client">Client</button>
+        </nav>
+        <div id="input-card-body">
+          <!-- Client-Server Content Section -->
+          <div id="client-server-content">
+            <h2>DNS Resolution</h2>
+            <p>
+              DNS Resolution is the process of locating an IP address for a
+              given domain name; this process ensures that a device can connect
+              to the correct server hosting the site.
+            </p>
+            <h2>TCP Handshake</h2>
+            <p>
+              TCP Handshake is a 3-step process used to establish a connection
+              between the client and a server over the Transmission Control
+              Protocol.
+            </p>
+            <h2>TLS Handshake</h2>
+            <p>
+              TLS Handshake is a 3-step process used to establish a secure &
+              encrypted connection between a client and a server over the
+              Transport Layer Security Protocol.
+            </p>
+            <h2>Request Construction</h2>
+            <p>
+              Request Construction is the process of a building an HTTP request
+              that the client sends to a server, assembling a request method,
+              URL, header, and optional body containing data.
+            </p>
+            <h2>Request Sending</h2>
+            <p>
+              Request Sending refers to the duration it takes for an HTTP
+              request to travel from the client to the server after the request
+              has been constructed.
+            </p>
+          </div>
+          <!-- Server Content Section -->
+          <div id="server-content">
+            <h2>Request Parsing</h2>
+            <p>
+              Request parsing refers to the process of breaking down a request
+              into its components, such as headers, parameters, and body content
+              to handle the client's intent.
+            </p>
+            <h2>Middleware Execution</h2>
+            <p>
+              Middleware execution involves processing requests and performing
+              specific tasks (such as parsing, authentication, and validation)
+              before the request reaches the main application logic.
+            </p>
+            <h2>Business Logic Execution</h2>
+            <p>
+              Business logic execution refers to the core functionality that
+              defines how an application processes data and handles user
+              interactions, applying specific algorithms and calculations to
+              accomplish a goal.
+            </p>
+            <h2>Database Execution</h2>
+            <p>
+              Database execution refers to the process of retrieving data from a
+              database, including DNS resolution, TCP connection,
+              authentication, query execution, and data retrieval.
+            </p>
+            <h2>Response Construction</h2>
+            <p>
+              Response construction refers to the process of formatting data
+              into a client-expected format (e.g. JSON), setting appropriate
+              status codes and headers.
+            </p>
+          </div>
+          <!-- Server-Client Content Section -->
+          <div id="server-client-content">
+            <h2>Response Sending</h2>
+            <p>
+              Response Sending refers to the duration it takes for an HTTP
+              response to travel from the server to the client after the
+              response has been constructed.
+            </p>
+          </div>
+          <!-- Client Content Section -->
+          <div id="client-content">
+            <h2>Response Parsing</h2>
+            <p>
+              Response parsing involves the client interpreting and converting
+              the raw data from the response into a usable format.
+            </p>
+            <h2>Scripting</h2>
+            <p>
+              Scripting refers to the execution of JavaScript code on a web
+              page, used to manipulate the Document Object Model, handle user
+              interactions, and perform other various tasks.
+            </p>
+            <h2>Reflow</h2>
+            <p>
+              Reflow is the process by which the browser recalculates the layout
+              to ensure that everything is correctly positioned and sized.
+            </p>
+            <h2>Repaint</h2>
+            <p>
+              Repaint is when the browser updates the visual appearance of a
+              page after the layout has been calculated, updating styles,
+              colors, and content on the screen.
+            </p>
+          </div>
+          <!-- Filter Content Section -->
+          <div id="filter-content">
+            <form id="filter-form">
+              <!-- Request Payload Radio -->
+              <div>
+                <h2>Request Payload Size</h2>
+                <label>
+                  <input
+                    type="radio"
+                    name="req-payload"
+                    value="small"
+                    checked
+                  />
+                  < 1mb
+                </label>
+                <label>
+                  <input type="radio" name="req-payload" value="medium" />
+                  1mb
+                </label>
+                <label>
+                  <input type="radio" name="req-payload" value="large" />
+                  115mb
+                </label>
+                <p>
+                  Amount of data being sent to the server - this will impact
+                  Request Construction, Request Sending, and Request Parsing
+                  times.
+                </p>
+              </div>
+              <!-- Server-Side Algorithm Radio -->
+              <div>
+                <h2>Server-Side Algorithmic Complexity</h2>
+                <label>
+                  <input
+                    type="radio"
+                    name="server-alg"
+                    value="linear"
+                    checked
+                  />
+                  Linear
+                </label>
+                <label>
+                  <input type="radio" name="server-alg" value="quadratic" />
+                  Quadratic
+                </label>
+                <label>
+                  <input type="radio" name="server-alg" value="cubic" />
+                  Cubic
+                </label>
+                <p>
+                  Times complexity of server-side algorithms - this will impact
+                  Business Logic Execution times.
+                </p>
+              </div>
+              <!-- SQL Complexity Radio -->
+              <div>
+                <h2>SQL Query Complexity</h2>
+                <label>
+                  <input type="radio" name="sql" value="low" checked />
+                  Low
+                </label>
+                <label>
+                  <input type="radio" name="sql" value="high" />
+                  High
+                </label>
+                <p>
+                  Complexity of query to database - this will impact Database
+                  Execution Times.
+                </p>
+              </div>
+              <!-- Response Payload Radio -->
+              <div>
+                <h2>Response Payload Size</h2>
+                <label>
+                  <input
+                    type="radio"
+                    name="res-payload"
+                    value="small"
+                    checked
+                  />
+                  < 1mb
+                </label>
+                <label>
+                  <input type="radio" name="res-payload" value="medium" />
+                  1mb
+                </label>
+                <label>
+                  <input type="radio" name="res-payload" value="large" />
+                  115mb
+                </label>
+                <p>
+                  Amount of data being sent to the client - this will impact
+                  Response Construction, Response Sending, and Response Parsing
+                  times.
+                </p>
+              </div>
+              <!-- Client-Side Algorithm Radio -->
+              <div>
+                <h2>Client-Side Algorithmic Complexity</h2>
+                <label>
+                  <input
+                    type="radio"
+                    name="client-alg"
+                    value="linear"
+                    checked
+                  />
+                  Linear
+                </label>
+                <label>
+                  <input type="radio" name="client-alg" value="quadratic" />
+                  Quadratic
+                </label>
+                <label>
+                  <input type="radio" name="client-alg" value="cubic" />
+                  Cubic
+                </label>
+                <p>
+                  Time complexity of client-side algorithms - this will impact
+                  Scripting times.
+                </p>
+              </div>
+            </form>
+          </div>
+        </div>
+        <button id="filter-button">Apply Filters</button>
+      </div>
+      <!-- RIGHT (BOTTOM) SIDE OF PAGE -->
+      <div id="output-card">
+        <div id="request-container">
+          <div id="notify-icon">
+            <div class="loader"></div>
+            <p></p>
+          </div>
+          <button id="send-button">Send Request</button>
+        </div>
+        <div id="data-table-container">
+          <table id="measurement-table">
+            <thead>
+              <tr>
+                <th>Time (milliseconds)</th>
+                <th class="data-header">Attempt N</th>
+                <th class="data-header">Attempt N-1</th>
+                <th class="data-header">Variance</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="dns-time" class="client-server">
+                <td>DNS Resolution</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="tcp-time" class="client-server">
+                <td>TCP Handshake</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="tls-time" class="client-server">
+                <td>TLS Handshake</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="req-struct-time" class="client-server">
+                <td>Request Construction</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="req-send-time" class="client-server">
+                <td>Request Sending</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="req-parse-time" class="server">
+                <td>Request Parsing</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="route-time" class="server">
+                <td>Middleware Execution</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="business-logic-time" class="server">
+                <td>Business Logic Execution</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="db-time" class="server">
+                <td>Database Query</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="res-struct-time" class="server">
+                <td>Response Construction</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="res-send-time" class="server-client">
+                <td>Response Sending</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="res-parse-time" class="client">
+                <td>Response Parsing</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr id="script-time" class="client">
+                <td>Scripting</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
