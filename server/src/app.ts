@@ -2,7 +2,6 @@ import express, { NextFunction, Request, Response } from "express";
 import { createClient } from "@supabase/supabase-js";
 import cors from "cors";
 import dotenv from "dotenv";
-import { performance } from "perf_hooks";
 import * as dns from "dns";
 import * as net from "net";
 import * as tls from "tls";
