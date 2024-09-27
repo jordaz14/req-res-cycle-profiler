@@ -39,7 +39,7 @@ function measureJSONParseTime(req: Request, res: Response, next: NextFunction) {
 }
 
 const corsOptions = {
-  origin: "https://req-res-cycle-profiler.onrender.com/",
+  origin: "https://req-res-cycle-profiler-pr-2.onrender.com/",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: "Content-Type,Authorization",
 };
@@ -53,7 +53,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.post("/measure", async (req: Request, res: Response) => {
-  const hostname = "req-res-cycle-profiler-production.up.railway.app";
+  const hostname = "req-res-cycle-profiler-req-res-cycle-profiler-pr-2.up.railway.app";
 
   // TIME FOR DNS, TCP, AND TLS CONNECTIONS
   const dnsTime = await measureDnsTime(hostname);

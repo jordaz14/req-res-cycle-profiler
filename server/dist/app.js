@@ -56,7 +56,7 @@ function measureJSONParseTime(req, res, next) {
     });
 }
 const corsOptions = {
-    origin: "https://req-res-cycle-profiler.onrender.com/",
+    origin: "https://req-res-cycle-profiler-pr-2.onrender.com/",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: "Content-Type,Authorization",
 };
@@ -68,7 +68,7 @@ app.get("/", (req, res) => {
     res.send({ message: "Welcome to the Landing Page." });
 });
 app.post("/measure", async (req, res) => {
-    const hostname = "req-res-cycle-profiler-production.up.railway.app";
+    const hostname = "req-res-cycle-profiler-req-res-cycle-profiler-pr-2.up.railway.app";
     // TIME FOR DNS, TCP, AND TLS CONNECTIONS
     const dnsTime = await measureDnsTime(hostname);
     const tcpTime = await measureTcpTime(hostname, 80);
