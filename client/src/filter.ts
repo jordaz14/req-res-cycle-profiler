@@ -104,7 +104,7 @@ filterRadioButtons.forEach((radio) => {
     for (const prop in filters) {
       if (prop == filterGroup) {
         console.log(filterGroup, filterStatus);
-        filters[prop].status = filterStatus;
+        filters[prop as keyof typeof filters].status = filterStatus;
       }
     }
   });
