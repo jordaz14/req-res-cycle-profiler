@@ -20,6 +20,14 @@ fetch(`${serverUrl}/`)
   .then((data) => console.log(data))
   .catch((error) => console.error(error));
 
+const clickMe = document.querySelector("#clickme");
+clickMe?.addEventListener("click", () => {
+  fetch(`${serverUrl}/click`)
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((error) => console.error(error));
+});
+
 // INITIALIZE ELEMENTS FOR LOADING STATUS
 const notifyLoading = document.querySelector(
   "#notify-icon > .loader"

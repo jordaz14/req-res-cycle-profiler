@@ -54,6 +54,10 @@ app.get("/", (req: Request, res: Response) => {
   res.send({ message: "Welcome to the Landing Page." });
 });
 
+app.get("/click", (req: Request, res: Response) => {
+  res.send({ message: "You clicked for a request" });
+});
+
 app.post("/measure", async (req: Request, res: Response) => {
   console.log("Beginning to Measure...");
   const hostname = "google.com";

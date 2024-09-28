@@ -19,6 +19,13 @@ fetch(`${serverUrl}/`)
     .then((response) => response.json())
     .then((data) => console.log(data))
     .catch((error) => console.error(error));
+const clickMe = document.querySelector("#clickme");
+clickMe === null || clickMe === void 0 ? void 0 : clickMe.addEventListener("click", () => {
+    fetch(`${serverUrl}/click`)
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.error(error));
+});
 // INITIALIZE ELEMENTS FOR LOADING STATUS
 const notifyLoading = document.querySelector("#notify-icon > .loader");
 const notifyResponse = document.querySelector("#notify-icon > p");
