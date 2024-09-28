@@ -56,7 +56,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.post("/measure", async (req: Request, res: Response) => {
   console.log("Beginning to Measure...");
-  const hostname = "req-res-cycle-profiler-pr-2.onrender.com";
+  const hostname = "google.com";
 
   // TIME FOR DNS, TCP, AND TLS CONNECTIONS
   const dnsTime = await measureDnsTime(hostname);
