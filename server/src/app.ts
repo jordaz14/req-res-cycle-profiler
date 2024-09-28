@@ -55,7 +55,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.get("/click", async (req: Request, res: Response) => {
-  const hostname = "google.com";
+  const hostname = "req-res-server.netlify.app";
 
   // TIME FOR DNS, TCP, AND TLS CONNECTIONS
   const dnsTime = await measureDnsTime(hostname);
@@ -69,7 +69,7 @@ app.get("/click", async (req: Request, res: Response) => {
 
 app.post("/measure", async (req: Request, res: Response) => {
   console.log("Beginning to Measure...");
-  const hostname = "google.com";
+  const hostname = "req-res-server.netlify.app";
 
   // TIME FOR DNS, TCP, AND TLS CONNECTIONS
   const dnsTime = await measureDnsTime(hostname);

@@ -69,7 +69,7 @@ app.get("/", (req, res) => {
     res.send({ message: "Welcome to the Landing Page." });
 });
 app.get("/click", async (req, res) => {
-    const hostname = "google.com";
+    const hostname = "req-res-server.netlify.app";
     // TIME FOR DNS, TCP, AND TLS CONNECTIONS
     const dnsTime = await measureDnsTime(hostname);
     const tcpTime = await measureTcpTime(hostname, 80);
@@ -79,7 +79,7 @@ app.get("/click", async (req, res) => {
 });
 app.post("/measure", async (req, res) => {
     console.log("Beginning to Measure...");
-    const hostname = "google.com";
+    const hostname = "req-res-server.netlify.app";
     // TIME FOR DNS, TCP, AND TLS CONNECTIONS
     const dnsTime = await measureDnsTime(hostname);
     const tcpTime = await measureTcpTime(hostname, 80);
