@@ -38,12 +38,8 @@ function measureJSONParseTime(req: Request, res: Response, next: NextFunction) {
   });
 }
 
-const corsOptions = {
-  origin: "https://req-res-cycle-profiler.onrender.com",
-};
-
 // EXECUTES MIDDLEWARE
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(measureReqReceivedTime);
 app.use(measureJSONParseTime);
 
