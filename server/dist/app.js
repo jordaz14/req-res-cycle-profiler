@@ -56,9 +56,7 @@ function measureJSONParseTime(req, res, next) {
     });
 }
 const corsOptions = {
-    origin: "https://req-res-client.netlify.app/",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    allowedHeaders: "Content-Type,Authorization",
+    origin: "https://req-res-cycle-profiler.onrender.com",
 };
 // EXECUTES MIDDLEWARE
 app.use((0, cors_1.default)(corsOptions));
