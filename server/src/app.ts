@@ -38,15 +38,19 @@ function measureJSONParseTime(req: Request, res: Response, next: NextFunction) {
   });
 }
 
+/*
 const corsOptions = {
   origin: "https://req-res-cycle-profiler-pr-2.onrender.com",
 };
+*/
+
 // EXECUTES MIDDLEWARE
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(measureReqReceivedTime);
 app.use(measureJSONParseTime);
 
 app.get("/", (req: Request, res: Response) => {
+  console.log("Incoming Request Received from Client on Landing Page!");
   res.send({ message: "Welcome to the Landing Page." });
 });
 
