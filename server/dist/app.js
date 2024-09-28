@@ -68,7 +68,13 @@ app.get("/", (req, res) => {
     console.log("Incoming Request Received from Client on Landing Page!");
     res.send({ message: "Welcome to the Landing Page." });
 });
-app.get("/click", (req, res) => {
+app.get("/click", async (req, res) => {
+    const hostname = "google.com";
+    // TIME FOR DNS, TCP, AND TLS CONNECTIONS
+    const dnsTime = await measureDnsTime(hostname);
+    const tcpTime = await measureTcpTime(hostname, 80);
+    const tlsTime = await measureTlsTime(hostname, 443);
+    console.log(dnsTime, tcpTime, tlsTime);
     res.send({ message: "You clicked for a request" });
 });
 app.post("/measure", async (req, res) => {
