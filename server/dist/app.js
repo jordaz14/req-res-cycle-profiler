@@ -55,30 +55,17 @@ function measureJSONParseTime(req, res, next) {
         next();
     });
 }
-/*
 const corsOptions = {
-  origin: "https://req-res-cycle-profiler-pr-2.onrender.com",
+    origin: "https://req-res-cycle-profiler.onrender.com",
 };
-*/
 // EXECUTES MIDDLEWARE
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)(corsOptions));
 app.use(measureReqReceivedTime);
 app.use(measureJSONParseTime);
 app.get("/", (req, res) => {
-    console.log("Incoming Request Received from Client on Landing Page!");
     res.send({ message: "Welcome to the Landing Page." });
 });
-app.get("/click", async (req, res) => {
-    const hostname = "req-res-server.netlify.app";
-    // TIME FOR DNS, TCP, AND TLS CONNECTIONS
-    const dnsTime = await measureDnsTime(hostname);
-    const tcpTime = await measureTcpTime(hostname, 80);
-    const tlsTime = await measureTlsTime(hostname, 443);
-    console.log(dnsTime, tcpTime, tlsTime);
-    res.send({ message: "You clicked for a request" });
-});
 app.post("/measure", async (req, res) => {
-    console.log("Beginning to Measure...");
     const hostname = "req-res-server.netlify.app";
     // TIME FOR DNS, TCP, AND TLS CONNECTIONS
     const dnsTime = await measureDnsTime(hostname);

@@ -13,19 +13,7 @@ import { initTable, updateMeasurements, updateColumn, measurements, } from "./ta
 initContent();
 initFilter();
 initTable();
-const serverUrl = "https://req-res-cycle-profiler-req-res-cycle-profiler-pr-2.up.railway.app";
-// TEST CONNECTION
-fetch(`${serverUrl}/`)
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-    .catch((error) => console.error(error));
-const clickMe = document.querySelector("#clickme");
-clickMe === null || clickMe === void 0 ? void 0 : clickMe.addEventListener("click", () => {
-    fetch(`${serverUrl}/click`)
-        .then((response) => response.json())
-        .then((data) => console.log(data))
-        .catch((error) => console.error(error));
-});
+const serverUrl = "https://req-res-cycle-profiler-production.up.railway.app";
 // INITIALIZE ELEMENTS FOR LOADING STATUS
 const notifyLoading = document.querySelector("#notify-icon > .loader");
 const notifyResponse = document.querySelector("#notify-icon > p");
