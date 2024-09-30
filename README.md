@@ -22,15 +22,15 @@ The request-response cycle profiler is an educative profiler which tracks perfor
 ## Core Technologies
 
 - **Frontend**
-  - TypeScript
-  - HTML / CSS
+  - TypeScript - _add static typing to JavaScript_
+  - HTML / CSS - _create static navigation body content and stylize as split-screen SPA_
 - **Backend**
-  - Node.js
-  - Express.js
+  - Node.js - _utilize dns, net, and tls core modules_
+  - Express.js - _manages logic for custom middleware and measurement endpoint_
 - **Database**
   - Supabase - _host PostgreSQL database on Supabase's free plan_
   - PostgreSQL - _RDBMS which supports SQL for querying data_
-  - SQL
+  - SQL - _query from [example.csv](https://github.com/user-attachments/files/17195551/example.csv)_
 - **Deployment**
   - Render - _deploy client (i.e. HTML, CSS, JavaScript) on Render's free plan_  
   - Railway - _deploy backend on Railway to avoid Render's free plan server downtimes_ 
@@ -72,27 +72,29 @@ npm run dev
 
 **Navigate Info Section**
 
+https://github.com/user-attachments/assets/e7e22016-0ee3-4251-98db-a3b4e0d017aa
+
 **Measure Request-Response Cycle Time**
 
-**Apply Payload Filter**
+https://github.com/user-attachments/assets/55b97164-71c4-430c-9d23-5b8f3392d1a8
 
-**Apply Algorithmic Complexity Filter**
+**Toggle Filters (e.g Algorithmic Complexity)**
 
-**Apply SQL Query Complexity Filter**
+https://github.com/user-attachments/assets/2e7bc17f-eda7-4d9a-b85b-2150fe925f62
 
 ## Codebase Overview
 
 - **CLIENT**
   - **src**
-    - [content.ts](./client/src/content.ts) - 
-    - [filter.ts](./client/src/filter.ts) -
-    - [index.ts](./client/src/index.ts) -
-    - [table.ts](./client/src/table.ts) -
+    - [content.ts](./client/src/content.ts) - dynamically change body content for different segments of request-response cycle
+    - [filter.ts](./client/src/filter.ts) - manages state of filters, handles form radio inputs
+    - [index.ts](./client/src/index.ts) - measures request times (e.g. construction, sending, parsing), response parsing time, and scripting time
+    - [table.ts](./client/src/table.ts) - updates table measurements
 - **SERVER**
   - **src**
-    - [app.ts](./server/src/app.ts) -
+    - [app.ts](./server/src/app.ts) - measures network times (e.g. DNS, TCP, and TLS), response times, and database execution time
   - **types**
-    - [express.d.ts](./server/types/express.d.ts) - 
+    - [express.d.ts](./server/types/express.d.ts) - modifies type of express request to include props appended via middleware
 
 ## Technical Features
 
@@ -105,9 +107,10 @@ npm run dev
 ## Future Improvements
 - [ ] Add total time (ms) element for table times
 - [ ] Segment out database execution time between connection & query times
-- [ ] Limit max payload sizes due to server error
+- [ ] Limit max payload sizes due to server error when deployed
 - [ ] Incorporate code blocks for each filter option to show logic that's modified
 - [ ] Refactor table.ts logic & add comments
+- [ ] Resolve DNS, TCP, and TLS connection times to not target separate Netlify hostname
 
 ## License
 This project is licensed under the GNU General Public License (GPL) - see the [LICENSE](./LICENSE) file for details.
