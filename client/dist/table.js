@@ -74,7 +74,7 @@ export function updateMeasurements(response, resSendingTime, scriptingTime) {
     measurements.TLS_Handshake.new = response.serverData.tlsTime;
     measurements.Request_Construction.new = response.reqConstructionTime;
     measurements.Request_Sending.new =
-        response.serverData.reqReceived - response.reqSend;
+        Math.abs(response.serverData.reqReceived - response.reqSend);
     measurements.Request_Parsing.new = response.serverData.reqParsingTime;
     measurements.Middleware_Execution.new =
         response.serverData.middleWareExecTime;
