@@ -39,7 +39,7 @@ The request-response cycle profiler is an educative profiler which tracks perfor
 
 As a reminder, this profiler is available to demo on [render](https://req-res-cycle-profiler.onrender.com/).
 
-Before installing, you will need to create an account with Supabase and deploy your own DB [here](https://supabase.com/dashboard/projects). Copy the connection details provided in the dashboard section of NeonDB to your clipboard, as these will be used to establish your own DB for the project.
+Before installing, you will need to create an account with Supabase and deploy your own DB [here](https://supabase.com/dashboard/projects). Copy the connection details provided in the dashboard section of Supabase to your clipboard, as these will be used to establish your own DB for the project.
 
 Below are the steps to install and build upon this profiler:
 
